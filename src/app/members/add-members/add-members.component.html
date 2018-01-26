@@ -1,0 +1,60 @@
+<div class="container">
+  <br>
+  <h2 class="page-header" style="text-align: center">{{ title }}</h2>
+  <div class="col-lg-3"></div>
+  <form (submit) = "createMember()" class="form-horizontal col-lg-6">
+      <fieldset>
+    <div class="form-group">
+      <label for="inputId" class="col-lg-2 control-label">รหัส</label>
+      <div class="col-lg-10">
+        <input type="text" [(ngModel)] = "id" id="inputId" placeholder="id" name="id"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputTName" class="col-lg-4 control-label">คำนำหน้า</label>
+      <div class="col-lg-10">
+        <input type="text" [(ngModel)] = "tname" id="inputTName" placeholder="TName" name="tname"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputFName" class="col-lg-2 control-label">ชื่อ</label>
+      <div class="col-lg-10">
+        <input type="text" [(ngModel)] = "fname" id="inputFName" placeholder="FName" name="fname"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputLName" class="col-lg-2 control-label">นามสกุล</label>
+      <div class="col-lg-10">
+        <input type="text" [(ngModel)] = "lname" id="inputLName" placeholder="LName" name="lname"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="inputAge" class="col-lg-2 control-label">อายุ</label>
+        <div class="col-lg-10">
+          <input type="text" [(ngModel)] = "age" id="inputAge" placeholder="Age" name="age"  class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+        <div class="col-lg-10">
+          <input type="text" [(ngModel)] = "email" id="inputEmail" placeholder="Email" name="email"  class="form-control">
+        </div>
+    </div>
+    <br>
+    <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+            <input type="submit" class="btn btn-primary" value="เพิ่ม">
+            <a [routerLink]="['/members']" routerLinkActive="active">
+              <input type="button" value="ยกเลิก" class="btn">
+            </a>
+        </div>
+      </div>
+    
+    </fieldset>
+  </form>
+  <div class="col-lg-3"></div>
+</div>
+
+
+
+
