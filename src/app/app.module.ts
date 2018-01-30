@@ -18,6 +18,7 @@ import { EditMembersComponent } from './members/edit-members/edit-members.compon
 import { AddMembersComponent } from './members/add-members/add-members.component';
 
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
     DashboardComponent,
     MembersComponent,
     EditMembersComponent,
-    AddMembersComponent
+    AddMembersComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

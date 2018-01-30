@@ -67,6 +67,29 @@ export class MembersComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router) { 
       //this.filteredItems = this.members;
+
+      var x = document.cookie.split(';');
+      var i = 0;
+      var cookieValue;
+      for(; i<x.length; i++){
+        if(x[i].split('=')[0].trim() == 'sessionID'){
+          cookieValue = x[i].split('=')[1];
+          break;
+        }
+      }
+      if(cookieValue === undefined){
+        this.router.navigate(['/']);
+      }else{
+        var myRes = atob(cookieValue).split('??');
+        console.log(myRes);
+        if(atob(myRes[0]) == 'admin' && atob(myRes[1]) == '1234'){
+
+        }else{
+          this.router.navigate(['/']);
+        }
+      }
+      
+
     }
 
   /*init(){
@@ -91,6 +114,12 @@ export class MembersComponent implements OnInit {
 
   click(member: Member): void {
     console.log('mem_gen : '+member.mem_gen);
+  }
+
+  logout(){
+    document.cookie = 'sessionID' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    console.log('logout!');
+    this.router.navigate(['/']);
   }
 
   //// get list of members
