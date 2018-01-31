@@ -55,6 +55,47 @@ app.get('/edit/(:id)', function(req, res, next){
 	})
 })
 
+// SHOW FIND MEMBER FORM
+app.post('/find', function(req, res, next){
+
+	console.log('---START SHOW FIND MEMBER FORM---')
+	
+	var member = {
+		mem_uname: req.sanitize('mem_uname').escape().trim(),
+		mem_pass: req.sanitize('mem_pass').escape().trim(),
+	}
+
+	console.log('mem_uname : ', member.mem_uname);
+	console.log('mem_pass : ', member.mem_pass);
+
+	req.getConnection(function(error, conn) {
+		conn.query('SELECT * FROM tb_member WHERE mem_uname = ' + "'" + member.mem_uname + "'" + ' AND mem_pass = ' + "'" + member.mem_pass + "'", function(err, rows, fields) {
+			if(err) {
+				console.log(err)
+				throw err
+			}
+			
+			// if user not found
+			if (rows.length <= 0) {
+				req.flash('error', 'Member not found with mem_uname = ' + member.mem_uname)
+				console.log('Member not found with mem_uname = ' + member.mem_uname)
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+			}
+			else { // if member found
+				// render to views/member/edit.ejs template file
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+				
+			}			
+		})
+		console.log('---END SHOW FIND MEMBER FORM---')	
+
+	})
+})
+
 // EDIT MEMBER POST ACTION
 app.put('/edit/(:id)', function(req, res, next) {
 

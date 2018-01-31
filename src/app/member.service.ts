@@ -55,6 +55,24 @@ export class MemberService {
   
   }
 
+  /// get member by username password
+  getMemberByUsernamePassword(findMember: any): Observable<Member[]> {
+
+    console.log(findMember);
+
+    let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(findMember);
+
+    console.log(body);
+    
+    return this.http
+      .post(this._getURL + 'find/' , body, options )
+      .map((res: Response) => res.json()
+      );
+  
+  }
+
   /// add new member
   createMember(newMember) {
 

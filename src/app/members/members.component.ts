@@ -63,6 +63,10 @@ export class MembersComponent implements OnInit {
   //filter
   inputName: any = { mem_fname: '' };
 
+  ses_value : string;
+  ses_nameValue : string
+
+
   constructor(private memberService: MemberService, private pagerService: PagerService,
     private formBuilder: FormBuilder,
     private router: Router) { 
@@ -71,9 +75,13 @@ export class MembersComponent implements OnInit {
       var x = document.cookie.split(';');
       var i = 0;
       var cookieValue;
+      var cookieNameValue;
       for(; i<x.length; i++){
         if(x[i].split('=')[0].trim() == 'sessionID'){
           cookieValue = x[i].split('=')[1];
+          this.ses_value = cookieValue;
+          cookieNameValue = x[i].split('=')[2];
+          this.ses_nameValue = cookieNameValue;
           break;
         }
       }
@@ -82,11 +90,12 @@ export class MembersComponent implements OnInit {
       }else{
         var myRes = atob(cookieValue).split('??');
         console.log(myRes);
-        if(atob(myRes[0]) == 'admin' && atob(myRes[1]) == '1234'){
+        console.log(cookieNameValue);
+        /*if(atob(myRes[0]) == 'admin' && atob(myRes[1]) == '1234'){
 
         }else{
           this.router.navigate(['/']);
-        }
+        }*/
       }
       
 
