@@ -6,17 +6,14 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/members">จัดการข้อมูลผู้ใช้ <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/members">จัดการข้อมูลผู้ใช้ </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/keycards">จัดการข้อมูลคีย์การ์ด</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/lockers">สถานะตู้ล็อคเกอร์</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">ช่วยเหลือ</a>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/lockers">สถานะตู้ล็อคเกอร์ <span class="sr-only">(current)</span></a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
@@ -25,7 +22,7 @@
     </form>
   </div>
 </nav>
-
+<hr class="my-4"/>
 <div class="jumbotron">
   <h4>ข้อมูลสถานะตู้ล็อคเกอร์</h4>
   <table class="table table-hover table-striped">
@@ -47,4 +44,13 @@
       </tr>
     </tbody>
   </table>
+  <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}"><a class="page-link" (click)="setPage(1)">First</a></li>
+        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}"><a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a></li>
+        <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"><a class="page-link" (click)="setPage(page)">{{page}}</a></li>
+        <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}"><a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a></li>
+        <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}"><a class="page-link" (click)="setPage(pager.totalPages)">Last</a></li>
+      </ul>
+    </nav>
 </div>

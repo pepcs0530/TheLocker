@@ -1,3 +1,4 @@
+import { Component, OnInit } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +21,7 @@ import { AddMembersComponent } from './members/add-members/add-members.component
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { LoginComponent } from './login/login.component';
 import { LockersComponent } from './lockers/lockers.component';
+import { KeycardsComponent } from './keycards/keycards.component';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { LockersComponent } from './lockers/lockers.component';
     EditMembersComponent,
     AddMembersComponent,
     LoginComponent,
-    LockersComponent
+    LockersComponent,
+    KeycardsComponent
   ],
   imports: [
     BrowserModule,

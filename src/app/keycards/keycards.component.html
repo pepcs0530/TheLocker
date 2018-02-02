@@ -1,0 +1,39 @@
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">.:: The Locker System ::.</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/members">จัดการข้อมูลผู้ใช้ </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/keycards">จัดการข้อมูลคีย์การ์ด <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/lockers">สถานะตู้ล็อคเกอร์</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <label>เข้าสู่ระบบโดย : {{ses_nameValue}} </label>
+      &nbsp;&nbsp;<input type="button" (click) = "logout()" value="ออกจากระบบ" class="btn btn-danger">
+    </form>
+  </div>
+</nav>
+<hr class="my-4"/>
+<div class="jumbotron">
+  <h4>จัดการข้อมูลคีย์การ์ด</h4>
+  <div class="form-group">
+      <label>KEY ID : </label>
+      <input  type="text"  id="inputKeyId" [(ngModel)]="inputKeyId.rfid_id"/>
+      <input type="button" (click)="readKeyId()" value="อ่านค่า" class="btn btn-default"/>
+
+      <!-- Button trigger modal -->
+      <button type="button" (click)="myModal.open()" class="btn btn-primary" >
+        Launch demo modal
+      </button>
+  </div>
+</div>
+
