@@ -20,6 +20,9 @@
         <a class="nav-link" routerLink="/keycards">จัดการข้อมูลคีย์การ์ด</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" routerLink="/lockers">สถานะตู้ล็อคเกอร์</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link disabled" href="#">ช่วยเหลือ</a>
       </li>
     </ul>
@@ -40,7 +43,7 @@
       <input  type="text"  id="inputName" [(ngModel)]="inputName.mem_fname"/>
       <!--input type="button" (click)="FilterByName()" value="ค้นหา" class="btn btn-default"/-->
   </div>
-  <table class="table table-hover">
+  <table class="table table-hover table-striped">
     <thead>
       <tr>
         <th scope="col">รหัส</th>

@@ -3,6 +3,8 @@
 var express = require('express')
 var app = express()
 
+//--------------------START MEMBER ROUTE-----------------------
+
 // SHOW LIST OF MEMBER
 app.get('/', function(req, res, next) {
 	req.getConnection(function(error, conn) {
@@ -252,5 +254,30 @@ app.delete('/delete/(:id)', function(req, res, next) {
 
 	})
 })
+
+//--------------------END MEMBER ROUTE-----------------------
+
+//--------------------START LOCKER ROUTE-----------------------
+
+// SHOW LIST OF LOCKER
+app.get('/qryLockers', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+        console.log('---START QUERY LIST OF LOCKER---')
+		conn.query('SELECT * FROM tb_locker ORDER BY loc_gen ASC',function(err, rows, fields) {
+			//if(err) throw err
+			if (err) {
+				console.log(err)
+				req.flash('error', err)
+				
+			} else {
+				console.log(rows)
+				res.end(JSON.stringify(rows));
+			}
+		})
+        console.log('---END QUERY LIST OF LOCKER---')
+	})
+})
+
+//--------------------END LOCKER ROUTE-----------------------
 
 module.exports = app

@@ -12,6 +12,8 @@ import { MembersComponent } from './members/members.component';
 import { AddMembersComponent } from './members/add-members/add-members.component';
 import { EditMembersComponent } from './members/edit-members/edit-members.component';
 
+import { LockersComponent } from './lockers/lockers.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
@@ -20,7 +22,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'members', component: MembersComponent },
   { path: 'members/new', component: AddMembersComponent},
-  { path: 'members/:mem_gen', component: EditMembersComponent}
+  { path: 'members/:mem_gen', component: EditMembersComponent},
+  { path: 'lockers', component: LockersComponent },
+
 ];
 
 @NgModule({
