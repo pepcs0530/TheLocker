@@ -62,16 +62,16 @@ CREATE TABLE `tb_member` (
 insert  into `tb_member`(`mem_gen`,`mem_id`,`mem_tname`,`mem_fname`,`mem_lname`,`mem_age`,`mem_email`,`mem_uname`,`mem_pass`,`mem_useflg`) values 
 (1,'m001','นาย','อภิวิชญ์','สังข์เมือง',11,'api@test.com','admin','1234','1'),
 (2,'m002','ผอ.','ทดสอบ','ระบบ',22,'test@test.com',NULL,NULL,'1'),
-(3,'m003','ดร.','ไม่รู้','สินะ',30,'mairu@test.com',NULL,NULL,'0'),
-(5,'m005','นาย','เอ','บี',44,'a.b@t.com',NULL,NULL,'0'),
-(6,'m006','นางสาว','แดง','มากมาย',1,'red.m@t.com',NULL,NULL,'0'),
-(7,'m007','นาย','สมชาย','ใจดี',2,'somchai.j@t.com',NULL,NULL,'1'),
-(8,'m008','นาย','ไก่','ขันแต่เช้า',3,'kai.k@t.com',NULL,NULL,'1'),
-(9,'m009','นางสาว','ปลา','สะลิด',4,'pla.s@t.com',NULL,NULL,'1'),
-(10,'m0010','นาย','เขียว','โซดา',5,'kaew.s@t.com',NULL,NULL,'1'),
-(11,'m0011','นาย','รี','เจนซี่',6,'re.j@t.com',NULL,NULL,'1'),
-(12,'m0012','นางสาว','ดอก','ไม้งาม',7,'dok.m@t.com',NULL,NULL,'1'),
-(13,'m0013','นาย','ทดเวลา','บาดเจ็บ',8,'tod.b@t.com',NULL,NULL,'1');
+(3,'m003','ดร.','ไม่รู้','สินะ',30,'mairu@test.com',NULL,NULL,'1'),
+(5,'m005','นาย','เอ','บี',44,'a.b@t.com',NULL,NULL,'1'),
+(6,'m006','นางสาว','แดง','มากมาย',1,'red.m@t.com',NULL,NULL,'1'),
+(7,'m007','นาย','สมชาย','ใจดี',2,'somchai.j@t.com',NULL,NULL,'0'),
+(8,'m008','นาย','ไก่','ขันแต่เช้า',3,'kai.k@t.com',NULL,NULL,'0'),
+(9,'m009','นางสาว','ปลา','สะลิด',4,'pla.s@t.com',NULL,NULL,'0'),
+(10,'m0010','นาย','เขียว','โซดา',5,'kaew.s@t.com',NULL,NULL,'0'),
+(11,'m0011','นาย','รี','เจนซี่',6,'re.j@t.com',NULL,NULL,'0'),
+(12,'m0012','นางสาว','ดอก','ไม้งาม',7,'dok.m@t.com',NULL,NULL,'0'),
+(13,'m0013','นาย','ทดเวลา','บาดเจ็บ',8,'tod.b@t.com',NULL,NULL,'0');
 
 /*Table structure for table `tb_rfid` */
 
@@ -83,12 +83,13 @@ CREATE TABLE `tb_rfid` (
   `rfid_status` varchar(1) DEFAULT NULL,
   `mem_gen` int(11) DEFAULT NULL,
   PRIMARY KEY (`rfid_gen`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_rfid` */
 
 insert  into `tb_rfid`(`rfid_gen`,`rfid_id`,`rfid_status`,`mem_gen`) values 
-(1,'RFID0001','1',1);
+(1,'RFID0001','1',1),
+(25,'RFID0002','1',2);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
