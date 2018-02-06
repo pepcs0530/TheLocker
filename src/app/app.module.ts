@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import {ModalModule} from '../../src/ng2-bs4-modal/ng2-bs4-modal.module';
+
 import { AppComponent } from './app.component';
 import { UsersComponent } from './users/users.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
@@ -15,6 +17,8 @@ import { MembersComponent } from './members/members.component';
 import { UserService } from './user.service';
 import { MessageService } from './message.service';
 import { MemberService } from './member.service';
+import { KeycardService } from './keycard.service';
+
 import { EditMembersComponent } from './members/edit-members/edit-members.component';
 import { AddMembersComponent } from './members/add-members/add-members.component';
 
@@ -44,9 +48,10 @@ import { KeycardsComponent } from './keycards/keycards.component';
     HttpModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    Ng2FilterPipeModule
+    Ng2FilterPipeModule,
+    ModalModule
   ],
-  providers: [ UserService, MessageService, MemberService ],
+  providers: [ UserService, MessageService, MemberService, KeycardService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -52,7 +52,8 @@ export class AddMembersComponent implements OnInit {
       mem_fname: this.fname,
       mem_lname: this.lname,
       mem_age: this.age,
-      mem_email: this.email
+      mem_email: this.email,
+      mem_useflg: "1"
     }
 
       this.__memberService.createMember(newMember).subscribe(

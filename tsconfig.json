@@ -15,5 +15,17 @@
       "es2017",
       "dom"
     ]
-  }
+  },
+    "exclude": [
+        "node_modules",
+        "demo",
+        "bundles",
+        "components",
+        "directives",
+        "src/test",
+        "**/*.spec.ts"
+    ],
+    "include": [
+        "./src/**/*"
+    ]
 }
