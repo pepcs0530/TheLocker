@@ -73,6 +73,20 @@ export class MemberService {
   
   }
 
+  /// get member by useflg = 1
+  getMemberByUseflg(): Observable<Member[]> {
+    
+    let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http
+      .get(this._getURL + 'qryUseflgMembers/' , options)
+      .map(res => {
+        return <Member[]>res.json();
+      })
+        
+  }
+
   /// add new member
   createMember(newMember) {
 

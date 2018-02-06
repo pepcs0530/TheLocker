@@ -22,6 +22,7 @@ export class EditMembersComponent implements OnInit {
   editlname: any;
   editage: any;
   editemail: any;
+  edituseflg: any;
   title: string;
   memberForm: FormGroup;
 
@@ -41,7 +42,8 @@ export class EditMembersComponent implements OnInit {
       mem_fname: this.editfname,
       mem_lname: this.editlname,
       mem_age: this.editage,
-      mem_email: this.editemail
+      mem_email: this.editemail,
+      mem_uselfg: this.edituseflg
     }
       this.__memberService.updateMember(editMember,memGen).subscribe(
         data => {
@@ -77,7 +79,8 @@ export class EditMembersComponent implements OnInit {
             this.editfname = members[0].mem_fname
             this.editlname = members[0].mem_lname
             this.editage = members[0].mem_age
-            this.editemail = members[0].mem_email
+            this.editemail = members[0].mem_email,
+            this.edituseflg = members[0].mem_useflg
             this.editMembers.push(this.member = members[0])
             data => {}
           })

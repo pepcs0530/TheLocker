@@ -6,4 +6,5 @@ export class Member{
     mem_lname: string;
     mem_age: any;
     mem_email: string;
+    mem_useflg: string;
 }

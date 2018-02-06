@@ -126,6 +126,7 @@ app.put('/edit/(:id)', function(req, res, next) {
 		mem_lname: req.sanitize('mem_lname').escape().trim(),
 		mem_age: req.sanitize('mem_age').escape().trim(),
 		mem_email: req.sanitize('mem_email').escape().trim(),
+		mem_useflg: req.sanitize('mem_useflg').escape().trim(),
 	}
 	console.log(member)
 	console.log(errors)
@@ -200,6 +201,7 @@ app.post('/add', function(req, res, next){
 			mem_lname: req.sanitize('mem_lname').escape().trim(),
 			mem_age: req.sanitize('mem_age').escape().trim(),
 			mem_email: req.sanitize('mem_email').escape().trim(),
+			mem_useflg: req.sanitize('mem_useflg').escape().trim(),
 		}
 		
 		req.getConnection(function(error, conn) {
@@ -255,6 +257,25 @@ app.delete('/delete/(:id)', function(req, res, next) {
 	})
 })
 
+// SHOW LIST OF MEMBER BY USERFLG
+app.get('/qryUseflgMembers', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+        console.log('---START QUERY LIST OF MEMBER BY USERFLG---')
+		conn.query('SELECT * FROM tb_member WHERE mem_useflg = "1" ORDER BY mem_gen ASC',function(err, rows, fields) {
+			//if(err) throw err
+			if (err) {
+				console.log(err)
+				req.flash('error', err)
+				
+			} else {
+				console.log(rows)
+				res.end(JSON.stringify(rows));
+			}
+		})
+        console.log('---END QUERY LIST OF MEMBER BY USERFLG---')
+	})
+})
+
 //--------------------END MEMBER ROUTE-----------------------
 
 //--------------------START LOCKER ROUTE-----------------------
@@ -279,5 +300,28 @@ app.get('/qryLockers', function(req, res, next) {
 })
 
 //--------------------END LOCKER ROUTE-----------------------
+
+//--------------------START KEYCARD ROUTE-----------------------
+
+// SHOW LIST OF KEYCARD
+app.get('/qryKeycards', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+        console.log('---START QUERY LIST OF KEYCARD---')
+		conn.query('SELECT * FROM tb_rfid r INNER JOIN tb_member m ON m.mem_gen = r.mem_gen ORDER BY rfid_gen ASC',function(err, rows, fields) {
+			//if(err) throw err
+			if (err) {
+				console.log(err)
+				req.flash('error', err)
+				
+			} else {
+				console.log(rows)
+				res.end(JSON.stringify(rows));
+			}
+		})
+        console.log('---END QUERY LIST OF KEYCARD---')
+	})
+})
+
+//--------------------END KEYCARD ROUTE-----------------------
 
 module.exports = app
