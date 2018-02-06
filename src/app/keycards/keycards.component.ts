@@ -4,6 +4,7 @@ import { NgModule, Directive} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule,Router,Routes} from "@angular/router";
 import { FormsModule } from '@angular/forms';
+import { Observable} from "rxjs/Observable";
 
 import { LockerService } from '../locker.service';
 import { Member } from '../member';
@@ -62,6 +63,9 @@ export class KeycardsComponent implements OnInit {
    pagedItems2: any[];
    keycards: Keycard[];
 
+   //filter-rfid
+  inputName2: any = { mem_fname: '' };
+
   constructor(private lockerService: LockerService, 
     private pagerService: PagerService,
     private memberService: MemberService,
@@ -119,12 +123,95 @@ export class KeycardsComponent implements OnInit {
         console.log("---END getMemberByUseflg()---")
   }
 
-  addRightMember(addRightMemberGen: number): void {
+  /// update useflg member data
+  updateUseflgMember(memGen) {
+
+    console.log("---START updateUseflgMember---")
+    
+    const editMember ={
+      /*mem_id: this.editid,
+      mem_tname: this.edittname,
+      mem_fname: this.editfname,
+      mem_lname: this.editlname,
+      mem_age: this.editage,
+      mem_email: this.editemail,*/
+      mem_useflg: '0'
+    }
+      this.memberService.updateUseflgMember(editMember,memGen).subscribe(
+        data => {
+          //console.log(data)
+        },
+        error => {
+          console.error("Error updating member!");
+          return Observable.throw(error);
+        }
+      );
+      //this.router.navigate(['/members'])
+
+      console.log("---END updateUseflgMember---")
+  }
+
+  //// adding new keycard
+  createKeycard(memGen) {
+
+    console.log("---START createKeycard---")
+
+    const newKeycard ={
+      rfid_id: this.inputKeyId.rfid_id,
+      rfid_status: "1",
+      mem_gen: memGen
+    }
+
+      this.keycardService.createKeycard(newKeycard).subscribe(
+        data => {
+          
+        },
+        error => {
+          console.error("Error adding keycard!");
+          return Observable.throw(error);
+        }
+      );
+    
+    //this.router.navigate(['/members'])
+    //this.getKeycards();
+
+    console.log("---END createKeycard---")
+  }
+
+  /// delete keycard 
+  deleteRightMember(deleteKeycardGen: number) {
+    console.log("---START deleteKeycard()---")
+
+    if (confirm("Are you sure you want to delete ?")) {
+      this.keycardService.deleteKeycard(deleteKeycardGen).subscribe(
+         data => {
+          
+         },
+         error => {
+           console.error("Error deleting keycard!");
+           return Observable.throw(error);
+         }
+      );
+      
+    }
+    
+    this.getKeycards();
+    //this.router.navigate(['/keycards'])
+    console.log("---END deleteKeycard()---")
+  }
+
+  addRightMember(addRightMemberGen: number) {
     console.log("---START addRightMember()---");
 
     //this.router.navigate(['/lockers']);
     this.modal.close();
     console.log("addRightMemberGen : ", addRightMemberGen);
+
+    this.updateUseflgMember(addRightMemberGen);
+
+    this.createKeycard(addRightMemberGen);
+
+    this.getKeycards();
 
     console.log("---END addRightMember()---");
   }
@@ -186,11 +273,12 @@ export class KeycardsComponent implements OnInit {
 
               // initialize to page 1
               this.setPage2(1);
+              
             },
             error => console.log("Error :: " + error)
         ) 
+        
         this.router.navigate(['/keycards'])
-
         console.log("---END getKeycards()---")
   }
 

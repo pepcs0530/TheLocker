@@ -41,6 +41,19 @@ export class MemberService {
       );
   }
 
+  /// edit and update member useflg to zero
+  updateUseflgMember(updateMember:any,memGen): Observable<Member[]> {
+    
+    let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(updateMember);
+    
+    return this.http
+      .put(this._getURL + 'updateUseflgMember/' + memGen, body, options )
+      .map((res: Response) => res.json()
+      );
+  }
+
   /// get member by id
   getMemberById(memGen: number): Observable<Member[]> {
 

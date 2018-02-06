@@ -29,6 +29,24 @@ export class KeycardService {
         
   }
 
+  /// add new keycard
+  createKeycard(newKeycard) {
+
+    let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(newKeycard);
+    
+      return this.http
+        .post(this._getURL + 'addKeycard/', body, options )
+          .map(res => res.json()
+        );
+  }
+
+  /// delete keycard
+  deleteKeycard(rfidGen: number) {
+    return this.http.delete(this._getURL + 'deleteKeycard/' + rfidGen);
+  }
+
   private handleError(error: any) {
     let errMsg = (error.message) ? error.message :
         error.status ? `${error.status} - ${error.statusText}` : 'Server error';
