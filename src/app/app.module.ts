@@ -26,7 +26,7 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { LoginComponent } from './login/login.component';
 import { LockersComponent } from './lockers/lockers.component';
 import { KeycardsComponent } from './keycards/keycards.component';
-
+import { MyDatePickerModule } from 'mydatepicker';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,8 @@ import { KeycardsComponent } from './keycards/keycards.component';
     AddMembersComponent,
     LoginComponent,
     LockersComponent,
-    KeycardsComponent
+    KeycardsComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -49,7 +50,8 @@ import { KeycardsComponent } from './keycards/keycards.component';
     AppRoutingModule,
     ReactiveFormsModule,
     Ng2FilterPipeModule,
-    ModalModule
+    ModalModule,
+    MyDatePickerModule
   ],
   providers: [ UserService, MessageService, MemberService, KeycardService ],
   bootstrap: [ AppComponent ]

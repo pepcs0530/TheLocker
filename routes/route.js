@@ -106,7 +106,6 @@ app.put('/edit/(:id)', function(req, res, next) {
 	//req.assert('name', 'Name is required').notEmpty()           //Validate name
 	//req.assert('age', 'Age is required').notEmpty()             //Validate age
     req.assert('mem_email', 'A valid email is required').isEmail()  //Validate email
-
     var errors = req.validationErrors()
     var member = {
 		/*name: req.sanitize('name').escape().trim(),
@@ -124,11 +123,12 @@ app.put('/edit/(:id)', function(req, res, next) {
 		mem_tname: req.sanitize('mem_tname').escape().trim(),
 		mem_fname: req.sanitize('mem_fname').escape().trim(),
 		mem_lname: req.sanitize('mem_lname').escape().trim(),
-		mem_age: req.sanitize('mem_age').escape().trim(),
+		mem_age: req.sanitize('mem_age'),
 		mem_email: req.sanitize('mem_email').escape().trim(),
-		mem_useflg: req.sanitize('mem_useflg').escape().trim(),
+        mem_birthdate: req.sanitize('mem_birthdate').escape().trim()
 	}
-	console.log(member)
+    
+	console.log(member);
 	console.log(errors)
     if( !errors ) {   //No errors were found.  Passed Validation!
 		

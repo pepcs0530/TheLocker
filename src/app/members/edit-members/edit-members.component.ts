@@ -5,6 +5,7 @@ import { RouterModule,Router,Routes,ActivatedRoute } from "@angular/router";
 
 import { MemberService } from '../../member.service';
 import { Member } from '../../member';
+import {IMyOptions} from 'mydatepicker';    
 
 @Component({
   selector: 'app-edit-members',
@@ -13,6 +14,12 @@ import { Member } from '../../member';
 })
 export class EditMembersComponent implements OnInit {
 
+
+  private myDatePickerOptions: IMyOptions = {
+        dateFormat: 'dd/mm/yyyy',
+    };  
+  
+  private selDate:Object;
   editMembers: Member[];
   member: Member;
   editid: any;
@@ -31,11 +38,14 @@ export class EditMembersComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,) { }
 
+  private onDateChanged(event){
+    this.selDate = event.date;
+  }
+
   /// update member data
   updateMember(memGen) {
 
     console.log("---START updateMember---")
-    
     const editMember ={
       mem_id: this.editid,
       mem_tname: this.edittname,
@@ -43,7 +53,12 @@ export class EditMembersComponent implements OnInit {
       mem_lname: this.editlname,
       mem_age: this.editage,
       mem_email: this.editemail,
-      mem_uselfg: this.edituseflg
+      mem_uselfg: this.edituseflg,
+      mem_birthdate: this.selDate["year"]
+      +"-"+
+      (this.selDate["month"] < 10 ? '0'+this.selDate["month"] : this.selDate["month"])
+      +"-"+
+      (this.selDate["day"] < 10 ? '0'+this.selDate["day"] : this.selDate["day"])
     }
       this.__memberService.updateMember(editMember,memGen).subscribe(
         data => {
@@ -82,6 +97,10 @@ export class EditMembersComponent implements OnInit {
             this.editemail = members[0].mem_email,
             this.edituseflg = members[0].mem_useflg
             this.editMembers.push(this.member = members[0])
+            let tempdate = new Date(members[0].mem_birthdate); 
+            this.selDate = {year: tempdate.getFullYear()
+                , month: tempdate.getMonth() + 1
+                , day: tempdate.getDate()}
             data => {}
           })
         
