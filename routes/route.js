@@ -3,6 +3,8 @@
 var express = require('express')
 var app = express()
 
+var client = require("jsreport-client")("http://localhost:5488", "admin", "password")
+
 //--------------------START MEMBER ROUTE-----------------------
 
 // SHOW LIST OF MEMBER
@@ -16,7 +18,7 @@ app.get('/', function(req, res, next) {
 				req.flash('error', err)
 				
 			} else {
-				console.log(rows)
+				//console.log(rows)
 				res.end(JSON.stringify(rows));
 			}
 		})
@@ -154,6 +156,7 @@ app.put('/edit/(:id)', function(req, res, next) {
 					req.flash('success', 'Data updated successfully!')
 					
 					console.log(member)
+					res.end();
 					console.log('Data updated successfully!')
 					
 				}
@@ -202,6 +205,7 @@ app.post('/add', function(req, res, next){
 			mem_age: req.sanitize('mem_age').escape().trim(),
 			mem_email: req.sanitize('mem_email').escape().trim(),
 			mem_useflg: req.sanitize('mem_useflg').escape().trim(),
+			mem_birthdate: req.sanitize('mem_birthdate').escape().trim()
 		}
 		
 		req.getConnection(function(error, conn) {
@@ -214,6 +218,7 @@ app.post('/add', function(req, res, next){
 					
 				} else {				
 					req.flash('success', 'Data added successfully!')
+					res.end();
 					console.log('Data added successfully!')	
 					
 				}
@@ -250,6 +255,7 @@ app.delete('/delete/(:id)', function(req, res, next) {
 			} else {
 				req.flash('success', 'Member deleted successfully! id = ' + req.params.id)
 				// redirect to users list page
+				res.end();
 				console.log('Member deleted successfully! id = ' + req.params.id)
 			}
 		})
@@ -269,7 +275,10 @@ app.get('/qryUseflgMembers', function(req, res, next) {
 				
 			} else {
 				//console.log(rows)
-				res.end(JSON.stringify(rows));
+				//res.end(JSON.stringify(rows));
+
+				res.write(JSON.stringify(rows));
+				res.end();
 			}
 		})
         console.log('---END QUERY LIST OF MEMBER BY USERFLG---')
@@ -348,8 +357,9 @@ app.get('/qryLockers', function(req, res, next) {
 				req.flash('error', err)
 				
 			} else {
-				console.log(rows)
-				res.end(JSON.stringify(rows));
+				//console.log(rows)
+				res.write(JSON.stringify(rows));
+				res.end();
 			}
 		})
         console.log('---END QUERY LIST OF LOCKER---')
@@ -372,7 +382,10 @@ app.get('/qryKeycards', function(req, res, next) {
 				
 			} else {
 				//console.log(rows)
-				res.end(JSON.stringify(rows));
+				//res.end(JSON.stringify(rows));
+
+				res.write(JSON.stringify(rows));
+				res.end();
 			}
 		})
         console.log('---END QUERY LIST OF KEYCARD---')
@@ -425,6 +438,7 @@ app.post('/addKeycard', function(req, res, next){
 					
 				} else {				
 					req.flash('success', 'Data added successfully!')
+					res.end();
 					console.log('Data added successfully!')	
 					
 				}
@@ -461,6 +475,7 @@ app.delete('/deleteKeycard/(:id)', function(req, res, next) {
 			} else {
 				req.flash('success', 'Keycard deleted successfully! id = ' + req.params.id)
 				// redirect to users list page
+				res.end();
 				console.log('Keycard deleted successfully! id = ' + req.params.id)
 			}
 		})
@@ -469,5 +484,18 @@ app.delete('/deleteKeycard/(:id)', function(req, res, next) {
 })
 
 //--------------------END KEYCARD ROUTE-----------------------
+
+//--------------------START REPORT ROUTE-----------------------
+app.get("/report", function(req, res, next) {
+    client.render({
+        template: { content: "Hello World", recipe: "phantom-pdf"}
+    }, function(err, response) {
+        if (err) {
+            return next(err);
+        }
+        response.pipe(res);
+    });
+});
+//--------------------END REPORT ROUTE-----------------------
 
 module.exports = app

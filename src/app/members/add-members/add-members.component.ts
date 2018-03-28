@@ -10,6 +10,8 @@ import { RouterModule,Router,Routes,ActivatedRoute } from "@angular/router";
 import { FormsModule } from '@angular/forms';
 import { MembersComponent } from '../../members/members.component';
 
+import { IMyOptions } from 'mydatepicker';    
+
 @Component({
   selector: 'app-add-members',
   templateUrl: './add-members.component.html',
@@ -34,6 +36,17 @@ export class AddMembersComponent implements OnInit {
     email: string;
     title: string;
 
+    private myDatePickerOptions: IMyOptions = {
+        dateFormat: 'dd/mm/yyyy',
+    };  
+
+    private birthDate:Object;
+
+    //public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDay() } };
+    //public model: any = { date: { year: 2018, month: 9, day: 2 } };
+
+    //public model: any = {}
+
   constructor(
     formBuilder: FormBuilder,
     private __memberService: MemberService,
@@ -53,12 +66,17 @@ export class AddMembersComponent implements OnInit {
       mem_lname: this.lname,
       mem_age: this.age,
       mem_email: this.email,
-      mem_useflg: "1"
+      mem_useflg: "1",
+      mem_birthdate: this.birthDate["year"]
+      +"-"+
+      (this.birthDate["month"] < 10 ? '0'+this.birthDate["month"] : this.birthDate["month"])
+      +"-"+
+      (this.birthDate["day"] < 10 ? '0'+this.birthDate["day"] : this.birthDate["day"])
     }
 
       this.__memberService.createMember(newMember).subscribe(
         data => {
-          
+          alert('เพิ่มข้อมูลเรียบร้อย');
         },
         error => {
           console.error("Error adding member!");
@@ -82,6 +100,32 @@ export class AddMembersComponent implements OnInit {
     });
 
     console.log("---END ngOnInit add member data---")
+
+    //let date = new Date();
+    /*let now = new Date();
+
+    let options = {  
+        weekday: 'long',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+
+    now.toLocaleString('thai', options); 
+
+    console.log(now.toLocaleString('thai', options));
+    console.log(new Date().getFullYear());
+    console.log(new Date().getMonth() + 1);
+    console.log(new Date().getDate());*/
+
+    //this.model = { date: { year: new Date().getFullYear(), month: new Date().getMonth()+1, day: new Date().getDate() } };
+    this.birthDate = { year: new Date().getFullYear(), month: new Date().getMonth()+1, day: new Date().getDate() }
+  }
+
+  private onDateChanged(event){
+    this.birthDate = event.date;
   }
 
 }

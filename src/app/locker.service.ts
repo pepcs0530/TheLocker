@@ -28,11 +28,68 @@ export class LockerService {
         
   }
 
+  /// call report
+  callReport() {
+
+    console.log("callReport");
+
+    let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8', "Access-Control-Allow-Origin": "*" });
+    let options = new RequestOptions({ 
+      headers: headers, 
+      body : {
+        "template": { "shortid" : "rkJTnK2ce" },
+        "data" : { 
+          "number": "123 ทดสอบ",
+          "seller": {
+              "name": "Next Step Webs, Inc.",
+              "road": "12345 Sunny Road",
+              "country": "Sunnyville, TX 12345"
+          },
+          "buyer": {
+              "name": "Acme Corp.",
+              "road": "16 Johnson Road",
+              "country": "Paris, France 8060"
+          },
+          "items": [{
+              "name": "การ์ดจอ",
+              "price": 300
+          },
+          {
+              "name": "แรม",
+              "price": 500
+          },
+          {
+              "name": "คีย์บอร์ด",
+              "price": 1500
+          }]
+        },
+        "options": { 
+          "saveResult" : "true",
+          "Content-Disposition" : "attachment; filename=myreport.pdf"
+         }
+      } });
+    //let body = JSON.stringify(findMember);
+
+    let body = {
+        
+    }
+
+    //console.log(body);
+    
+    return this.http
+      .post('http://localhost:5488/api/report/Invoice' , body, options )
+      .map((res: Response) => res.json()
+      );
+  
+  }
+
   private handleError(error: any) {
     let errMsg = (error.message) ? error.message :
         error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg);
     return Observable.throw(errMsg);
   }
+
+
 
 }

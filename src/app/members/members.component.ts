@@ -140,9 +140,9 @@ export class MembersComponent implements OnInit {
             resultArray => {
               this.members = resultArray;
               console.log(resultArray);
+
               //this.filteredItems = resultArray;
               //console.log(this.filteredItems);
-              //this.init();
 
               this.allItems = resultArray;
 
@@ -163,7 +163,7 @@ export class MembersComponent implements OnInit {
     if (confirm("Are you sure you want to delete ?")) {
       this.memberService.deleteMember(deleteMemberGen).subscribe(
          data => {
-           
+          alert('ลบข้อมูลเรียบร้อย');
          },
          error => {
            console.error("Error deleting member!");

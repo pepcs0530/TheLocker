@@ -13,26 +13,56 @@
 
 <!--Pulling Awesome Font -->
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-<form (ngSubmit)="formSubmit()">
-  <div class="container">
-      <div class="row">
-          <div class="col-md-offset-5 col-md-5">
-              <div class="form-login">
-              <h4>.:: THE LOCKER SYSTEM. ::.</h4>
-              <input type="text" [(ngModel)] = "data.username" name="userName" id="userName" class="form-control input-sm chat-input" placeholder="username" />
-              <br/>
-              <input type="password" [(ngModel)] = "data.password" name="userPassword" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
-              <br/>
-              <div class="wrapper">
-              <span class="group-btn">  
-                  <button type="submit">   
-                    <a class="btn btn-primary btn-md">login <i class="fa fa-sign-in"></i></a>
-                  </button>
-              </span>
-              </div>
-              </div>
-          
-          </div>
-      </div>
-  </div>
+<form (ngSubmit)="formSubmit()" >
+  <!--div class="container">
+    <table border="1" width="100%">
+      <tr align="center" style="margin: 0px auto;">
+        <td>
+            <div class="row">
+                <div class="col-md-offset-5 col-md-5">
+                    <div class="form-login">
+                    <h4>.:: THE LOCKER SYSTEM. ::.</h4>
+                    <input type="text" [(ngModel)] = "data.username" name="userName" id="userName" class="form-control input-sm chat-input" placeholder="username" />
+                    <br/>
+                    <input type="password" [(ngModel)] = "data.password" name="userPassword" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
+                    <br/>
+                    <div class="wrapper">
+                    <span class="group-btn">  
+                        <button type="submit">   
+                          <a class="btn btn-primary btn-md">login <i class="fa fa-sign-in"></i></a>
+                        </button>
+                    </span>
+                    </div>
+                    </div>
+                
+                </div>
+            </div> 
+        </td>
+      </tr>
+      
+    </table>
+  </div-->
+  <table border="0" width="100%"  >
+      <tr align="center" style="margin: 0px auto;">
+        <td>
+            <div class="col-md-offset-5 col-md-5">
+                <div class="form-login" style="margin-top: 10%; margin-bottom: 10%;">
+                <h4>.:: THE LOCKER SYSTEM. ::.</h4>
+                <input type="text" [(ngModel)] = "data.username" name="userName" id="userName" class="form-control input-sm chat-input" placeholder="username" />
+                <br/>
+                <input type="password" [(ngModel)] = "data.password" name="userPassword" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
+                <br/>
+                <div class="wrapper">
+                <span class="group-btn">  
+                    <button type="submit">   
+                      <a class="btn btn-primary btn-md">login <i class="fa fa-sign-in"></i></a>
+                    </button>
+                </span>
+                </div>
+                </div>
+            
+            </div>
+        </td>
+      </tr>
+  </table>
 </form>

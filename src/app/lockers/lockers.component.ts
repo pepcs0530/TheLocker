@@ -11,6 +11,10 @@ import { Member } from '../member';
 import { PagerService } from '../pager.service';
 import { Locker } from '../locker';
 
+import { Observable } from "rxjs/Observable";
+
+import { ReportService } from "../report.service";
+
 @NgModule({
   imports: [ BrowserModule,FormsModule ],
   declarations: [ LockersComponent ],
@@ -21,14 +25,14 @@ import { Locker } from '../locker';
   selector: 'app-lockers',
   templateUrl: './lockers.component.html',
   styleUrls: ['./lockers.component.css'],
-  providers: [LockerService, PagerService]
+  providers: [LockerService, PagerService, ReportService]
 })
 export class LockersComponent implements OnInit {
 
   lockers: Locker[];
 
   ses_value : string;
-  ses_nameValue : string
+  ses_nameValue : string;
 
   // array of all items to be paged
   private allItems: any[];
@@ -39,7 +43,7 @@ export class LockersComponent implements OnInit {
   // paged items
   pagedItems: any[];
 
-  constructor(private lockerService: LockerService, private pagerService: PagerService,
+  constructor(private lockerService: LockerService, private pagerService: PagerService, private reportService: ReportService,
     private formBuilder: FormBuilder,
     private router: Router) { 
       var x = document.cookie.split(';');
@@ -118,6 +122,156 @@ export class LockersComponent implements OnInit {
     console.log(this.pagedItems)
 
     this.lockers = this.pagedItems;
+  }
+
+  /// call report 
+  report1() {
+    
+
+    /*console.log("---START report()---")
+    this.lockerService.callReport().subscribe(
+      data => {
+        alert('ออกรายงาน');
+      },
+      error => {
+        console.error("Error call report!");
+        //return Observable.throw(error);
+      }
+    )
+    ;
+
+    console.log("---END report()---")*/
+
+    console.log("---START report()---");
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:5488/api/report', true)
+    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8')
+    xhr.responseType = 'arraybuffer'
+    xhr.onload = function(e) {
+        console.log(this);
+        if (xhr.status == 200) {
+            console.log(window);
+            //window.open("data:application/pdf;base64," + window.btoa(String.fromCharCode.apply(null, new Uint8Array(xhr.response))), '_blank');
+            
+            //window.open("https://www.w3schools.com");
+
+            // var html = '<html>' +
+            // '<style>html,body {padding:0;margin:0;} iframe {width:100%;height:100%;border:0}</style>' +
+            // '<body>' +                                
+            // '<iframe type="application/pdf" src="' +  '"data:application/pdf;base64,"' + window.btoa(String.fromCharCode.apply(null, new Uint8Array(xhr.response))) + '"></iframe>' +
+            // '</body></html>';
+
+            // var a = window.open("about:blank", "Report");
+            // a.document.write(html);
+            // a.document.close();
+
+            //window.location.href = ("data:application/pdf;base64," + window.btoa(String.fromCharCode.apply(null, new Uint8Array(xhr.response))));
+
+
+            //-------------------------------------------------------------------------------------------
+
+            //openWindowWithPost("http://localhost:5488/api/report/Invoice", {
+            //    p: "view.map",
+            //    coords: encodeURIComponent(coords)
+            //});
+
+            //openWindowWithPost(url, data) {
+              /*var form = document.createElement("form");
+              form.target = "_blank";
+              form.method = "POST";
+              form.action = "http://localhost:5488/api/report/Invoice";
+              form.style.display = "none";
+
+              var data = {
+                    p: "view.map",
+                    coords: encodeURIComponent("data:application/pdf;base64," + window.btoa(String.fromCharCode.apply(null, new Uint8Array(xhr.response))))
+              }
+          
+              for (var key in data) {
+                  var input = document.createElement("input");
+                  input.type = "hidden";
+                  input.name = key;
+                  input.value = data[key];
+                  form.appendChild(input);
+              }
+          
+              document.head.setAttribute("Content-Type", "application/pdf");
+              document.body.appendChild(form);
+              form.submit();
+              document.body.removeChild(form);*/
+            //}
+
+            //-------------------------------------------------------------------------------------------
+
+            var base64PDF = window.btoa(String.fromCharCode.apply(null, new Uint8Array(xhr.response)));
+
+            var objbuilder = '';
+              objbuilder += ('<object width="100%" height="100%"      data="data:application/pdf;base64,');
+              objbuilder += (base64PDF);
+              objbuilder += ('" type="application/pdf" class="internal">');
+              objbuilder += ('<embed src="data:application/pdf;base64,');
+              objbuilder += (base64PDF);
+              objbuilder += ('" type="application/pdf" />');
+              objbuilder += ('</object>');
+            }
+
+            var win = window.open("","_blank","titlebar=yes");
+            win.document.title = "My Title";
+            win.document.write('<html><head><title>Report</title></head><body>');
+            win.document.write(objbuilder);
+            win.document.write('</body></html>');
+        //layer = jQuery(win.document);
+
+            //-------------------------------------------------------------------------------------------
+    }
+    
+    xhr.send(JSON.stringify({
+      template: {
+          shortid: 'rkSiVeatM',
+          recipe: 'phantom-pdf'
+      },
+      data: {
+           
+        "number": "123 ทดสอบ",
+        "seller": {
+            "name": "นาย อภิวิชญ์  สังข์เมือง",
+            "road": "ID00001",
+            "country": "012-345-6789"
+        },
+        "buyer": {
+            "name": "Acme Corp.",
+            "road": "16 Johnson Road",
+            "country": "Paris, France 8060"
+        },
+        "items": [{
+            "name": "การ์ดจอ123",
+            "price": 300
+        },
+        {
+            "name": "แรม123",
+            "price": 500
+        },
+        {
+            "name": "คีย์บอร์ด123",
+            "price": 1500
+        }]
+      },
+      "options": { 
+        "saveResult" : "true",
+        "Content-Disposition" : "attachment; filename=myreport.pdf"
+       }
+    }))
+
+    console.log("---END report()---");
+  }
+
+  report() {
+    console.log("---START generateReport()---");
+
+    this.reportService.getReport();
+
+    console.log("---END generateReport()---");
   }
 
 }

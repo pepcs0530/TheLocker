@@ -3,7 +3,8 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Locker } from './locker';
 import { Keycard } from './keycard';
 import 'rxjs/add/operator/map'; 
-import { Observable } from "rxjs/Observable";
+//import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Resolve } from '@angular/router/src/interfaces';
 
@@ -38,13 +39,21 @@ export class KeycardService {
     
       return this.http
         .post(this._getURL + 'addKeycard/', body, options )
-          .map(res => res.json()
-        );
+          //.map(res => res.json());
   }
 
   /// delete keycard
   deleteKeycard(rfidGen: number) {
+    let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+    let options = new RequestOptions({ headers: headers });
+
     return this.http.delete(this._getURL + 'deleteKeycard/' + rfidGen);
+
+    /*const a = this.http.delete(this._getURL + 'deleteKeycard/' + rfidGen).map(res=> { return res.json() } );
+    const b = this.http.get(this._getURL + 'qryKeycards/', options).map(res => {
+      return <Keycard[]>res.json();
+    })
+    return Observable.concat(a,b);*/
   }
 
   private handleError(error: any) {

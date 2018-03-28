@@ -137,9 +137,17 @@ export class KeycardsComponent implements OnInit {
       mem_email: this.editemail,*/
       mem_useflg: '0'
     }
-      this.memberService.updateUseflgMember(editMember,memGen).subscribe(
+
+    const newKeycard ={
+      rfid_id: this.inputKeyId.rfid_id,
+      rfid_status: "1",
+      mem_gen: memGen
+    }
+
+      this.memberService.updateUseflgMember(editMember,newKeycard,memGen).subscribe(
         data => {
           //console.log(data)
+          alert(data);
         },
         error => {
           console.error("Error updating member!");
@@ -164,7 +172,11 @@ export class KeycardsComponent implements OnInit {
 
       this.keycardService.createKeycard(newKeycard).subscribe(
         data => {
-          
+          alert(data);
+          alert('เพิ่มข้อมูลเรียบร้อย');
+          //console.log(data);
+          this.getKeycards();
+          return true;
         },
         error => {
           console.error("Error adding keycard!");
@@ -185,17 +197,19 @@ export class KeycardsComponent implements OnInit {
     if (confirm("Are you sure you want to delete ?")) {
       this.keycardService.deleteKeycard(deleteKeycardGen).subscribe(
          data => {
-          
+          alert(data);
+          alert('ลบข้อมูลเรียบร้อย');
+          this.getKeycards();
+          return true;
          },
          error => {
            console.error("Error deleting keycard!");
            return Observable.throw(error);
          }
       );
-      
     }
     
-    this.getKeycards();
+    //this.getKeycards();
     //this.router.navigate(['/keycards'])
     console.log("---END deleteKeycard()---")
   }
@@ -211,7 +225,7 @@ export class KeycardsComponent implements OnInit {
 
     this.createKeycard(addRightMemberGen);
 
-    this.getKeycards();
+    //this.getKeycards();
 
     console.log("---END addRightMember()---");
   }

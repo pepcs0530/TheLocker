@@ -15,6 +15,9 @@
       <li class="nav-item active">
         <a class="nav-link" routerLink="/lockers">สถานะตู้ล็อคเกอร์ <span class="sr-only">(current)</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/reports">รายงาน </a>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <label>เข้าสู่ระบบโดย : {{ses_nameValue}} </label>
@@ -23,6 +26,9 @@
   </div>
 </nav>
 <hr class="my-4"/>
+<form target="_blank" action="www.google.com">
+  <input type="button" (click) = "report()" value="ออกรายงาน" class="btn btn-info">
+</form>  
 <div class="jumbotron">
   <h4>ข้อมูลสถานะตู้ล็อคเกอร์</h4>
   <table class="table table-hover table-striped">
@@ -54,3 +60,4 @@
       </ul>
     </nav>
 </div>
+

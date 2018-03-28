@@ -27,6 +27,7 @@ import { LoginComponent } from './login/login.component';
 import { LockersComponent } from './lockers/lockers.component';
 import { KeycardsComponent } from './keycards/keycards.component';
 import { MyDatePickerModule } from 'mydatepicker';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MyDatePickerModule } from 'mydatepicker';
     LoginComponent,
     LockersComponent,
     KeycardsComponent,
+    ReportsComponent,
     
   ],
   imports: [

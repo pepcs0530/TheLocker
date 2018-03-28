@@ -5,7 +5,7 @@ import { RouterModule,Router,Routes,ActivatedRoute } from "@angular/router";
 
 import { MemberService } from '../../member.service';
 import { Member } from '../../member';
-import {IMyOptions} from 'mydatepicker';    
+import { IMyOptions } from 'mydatepicker';    
 
 @Component({
   selector: 'app-edit-members',
@@ -16,8 +16,8 @@ export class EditMembersComponent implements OnInit {
 
 
   private myDatePickerOptions: IMyOptions = {
-        dateFormat: 'dd/mm/yyyy',
-    };  
+      dateFormat: 'dd/mm/yyyy',
+  };  
   
   private selDate:Object;
   editMembers: Member[];
@@ -62,7 +62,7 @@ export class EditMembersComponent implements OnInit {
     }
       this.__memberService.updateMember(editMember,memGen).subscribe(
         data => {
-          //console.log(data)
+         alert('ปรับปรุงข้อมูลเรียบร้อย');
         },
         error => {
           console.error("Error updating member!");

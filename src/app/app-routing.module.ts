@@ -14,6 +14,8 @@ import { EditMembersComponent } from './members/edit-members/edit-members.compon
 
 import { KeycardsComponent } from './keycards/keycards.component';
 import { LockersComponent } from './lockers/lockers.component';
+import { ReportsComponent } from './reports/reports.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -25,7 +27,8 @@ const routes: Routes = [
   { path: 'members/new', component: AddMembersComponent},
   { path: 'members/:mem_gen', component: EditMembersComponent},
   { path: 'keycards', component: KeycardsComponent },
-  { path: 'lockers', component: LockersComponent }
+  { path: 'lockers', component: LockersComponent },
+  { path: 'reports', component: ReportsComponent }
 
 ];
 

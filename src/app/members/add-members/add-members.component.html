@@ -40,6 +40,13 @@
           <input type="text" [(ngModel)] = "email" id="inputEmail" placeholder="Email" name="email"  class="form-control">
         </div>
     </div>
+    <div class="form-group">
+      <label for="inputEmail" class="col-lg-4 control-label">วันเดือนปีเกิด</label>
+      <div class="col-lg-10">
+        <my-date-picker name="mydate" (dateChanged)="onDateChanged($event)"
+                    [selDate]="birthDate"></my-date-picker>
+      </div>
+    </div>
     <br>
     <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">

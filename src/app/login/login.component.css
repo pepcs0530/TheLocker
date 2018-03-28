@@ -6,8 +6,11 @@ body {
 }
 
 .container {
-    padding: 25px;
-    position: fixed;
+    /* padding: 25px;
+    position: fixed; */
+    position: absolute;
+    width: 100%;
+    left: 0;
 }
 
 .form-login {

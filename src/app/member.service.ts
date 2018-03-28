@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Member } from './member';
+import { Keycard } from './keycard';
 import 'rxjs/add/operator/map'; 
-import { Observable } from "rxjs/Observable";
+//import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Resolve } from '@angular/router/src/interfaces';
 
@@ -29,29 +31,31 @@ export class MemberService {
   }
 
   /// edit and update member details
-  updateMember(updateMember:any,memGen): Observable<Member[]> {
+  updateMember(updateMember:any,memGen) {
     
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(updateMember);
+
+    console.log('update',updateMember);
     
     return this.http
       .put(this._getURL + 'edit/' + memGen, body, options )
-      .map((res: Response) => res.json()
-      );
+      //.map((res: Response) => res.json());
   }
 
   /// edit and update member useflg to zero
-  updateUseflgMember(updateMember:any,memGen): Observable<Member[]> {
+  updateUseflgMember(updateMember:any,newKeycard:any,memGen) {
     
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(updateMember);
+    let body2 = JSON.stringify(newKeycard);
     
     return this.http
       .put(this._getURL + 'updateUseflgMember/' + memGen, body, options )
-      .map((res: Response) => res.json()
-      );
+      //.map((res: Response) => res.json());
+
   }
 
   /// get member by id
@@ -106,11 +110,12 @@ export class MemberService {
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(newMember);
+
+    console.log('insert',newMember)
     
       return this.http
         .post(this._getURL + 'add/', body, options )
-          .map(res => res.json()
-        );
+          //.map(res => res.json());
   }
 
   /// delete member

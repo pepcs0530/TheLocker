@@ -71,7 +71,8 @@ var methodOverride = require('method-override')
  * there are other ways of overriding as well
  * like using header & using query value
  */ 
-app.use(methodOverride(function (req, res) {
+app.use(methodOverride(function (req, res) {	
+	
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
     // look in urlencoded POST bodies and delete it
     var method = req.body._method
@@ -128,3 +129,7 @@ app.get('/',(req, res) =>{
 app.listen(port, ()=>{
     console.log('Server started at port:'+port);
 });
+
+//Access-Control-Allow-Origin is a response header, not a request header you need to fix the permission in your backend. so you must create cors.js file that contains all necessary permissions.
+var cors2=require('./cors');
+app.use(cors2.permission)
