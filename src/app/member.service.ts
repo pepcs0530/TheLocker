@@ -7,14 +7,18 @@ import 'rxjs/add/operator/map';
 import { Observable } from "rxjs";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Resolve } from '@angular/router/src/interfaces';
+import { Config } from './config';
 
 @Injectable()
 export class MemberService {
 
   // api url to get the list of members
-  private _getURL = "http://localhost:4001/api/";
+  //private _getURL = "http://localhost:4001/api/";
+  private _getURL :string;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private config: Config) { 
+    this._getURL = "http://"+config.db_host+":"+config.db_port+"/api/";
+  }
 
   /// get list of members
   getMembers(): Observable<Member[]> {
@@ -30,6 +34,24 @@ export class MemberService {
         
   }
 
+  /// get list of member by condition
+  getMemberByCond(keyword:any): Observable<Member[]> {
+    
+      console.log(keyword);
+
+      let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+      let options = new RequestOptions({ headers: headers });
+      let body = JSON.stringify(keyword);
+  
+      console.log(body);
+      
+      return this.http
+        .post(this._getURL + 'search/' , body, options )
+        .map((res: Response) => res.json()
+      );
+        
+  }
+
   /// edit and update member details
   updateMember(updateMember:any,memGen) {
     
@@ -37,7 +59,7 @@ export class MemberService {
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(updateMember);
 
-    console.log('update',updateMember);
+    console.log('update', updateMember);
     
     return this.http
       .put(this._getURL + 'edit/' + memGen, body, options )
@@ -45,16 +67,19 @@ export class MemberService {
   }
 
   /// edit and update member useflg to zero
-  updateUseflgMember(updateMember:any,newKeycard:any,memGen) {
+  // updateUseflgMember(updateMember:any,newKeycard:any,memGen) {
+    updateUseflgMember(updateMember: any, memGen) {
     
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(updateMember);
-    let body2 = JSON.stringify(newKeycard);
+    // let body2 = JSON.stringify(newKeycard);
+
+    console.log('update', updateMember);
     
     return this.http
-      .put(this._getURL + 'updateUseflgMember/' + memGen, body, options )
-      //.map((res: Response) => res.json());
+      .put(this._getURL + 'updateUseflgMember/' + memGen, body, options );
+      // .map((res: Response) => res.json());
 
   }
 

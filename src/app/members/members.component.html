@@ -5,7 +5,7 @@
     <a routerLink="/members">จัดการข้อมูลผู้ใช้</a>
     <a routerLink="/keycards">จัดการข้อมูลคีย์การ์ด</a>
 </nav-->
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -34,14 +34,36 @@
 </nav>
 <hr class="my-4"/>
 <div class="jumbotron">
-  <a [routerLink]="['/members/new']" routerLinkActive="active">
-    <input type="button" value="เพิ่มข้อมูลผู้ใช้" class="btn btn-primary">
-  </a>
   <h4>ข้อมูลผู้ใช้ระบบงาน The locker</h4>
   <div class="form-group">
-      <label>ค้นหาชื่อ : </label>
-      <input  type="text"  id="inputName" [(ngModel)]="inputName.mem_fname"/>
-      <!--input type="button" (click)="FilterByName()" value="ค้นหา" class="btn btn-default"/-->
+      <div class="form-row">
+          <div style="float: left; width: 80%;">
+            <label>ค้นหาชื่อ : </label>
+            <input  type="text"  id="inputName" [(ngModel)]="inputName.mem_fname"/>
+
+            <button type="button" (click)="searchMember(inputName.mem_fname)" class="btn btn-default" >
+                ค้นหา
+            </button>
+      
+            <!--input type="button" (click)="FilterByName()" value="ค้นหา" class="btn btn-default"/-->
+            <!--a [routerLink]="['/members/new']" routerLinkActive="active">
+              <input type="button" value="เพิ่มข้อมูลผู้ใช้" class="btn btn-primary">
+            </a-->
+      
+            <!-- Button trigger modal -->
+            <button type="button" (click)="modalAdd.open('lg')" class="btn btn-primary" >
+              เพิ่มข้อมูลผู้ใช้
+            </button>
+          </div>
+          <div style="float: right; width: 20%;">
+              แสดงจำนวน : <select style="width:30%; display:unset;" id="Id" #Id="ngModel" class="hideLabel form-control" [(ngModel)]="inputPageSize" name="Id" (change)="selectPageSize();">  
+                  <!--option selected="" value=""></option-->  
+                  <option [ngValue]="k.Id" *ngFor="let k of pageSizeList">  
+                          {{k.Name}}  
+                  </option>  
+                </select> 
+          </div>
+      </div>
   </div>
   <table class="table table-hover table-striped">
     <thead>
@@ -54,14 +76,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor = "let member of members | filterBy: inputName" (click)="click(member)">
+      <tr *ngFor = "let member of members" (click)="click(member)">
         <th scope="row">{{member.mem_id}}</th>
         <td>{{member.mem_tname}} {{member.mem_fname}} {{member.mem_lname}}</td>
         <td>{{member.mem_age}}</td>
         <td>{{member.mem_email}}</td>
-        <td><a [routerLink]="['/members', member.mem_gen]" routerLinkActive="active">
+        <td>
+          <!--a [routerLink]="['/members', member.mem_gen]" routerLinkActive="active">
             <input type="button" value="แก้ไข" class="btn btn-success">
-          </a>
+          </a-->
+          
+          <!-- Button trigger modal -->
+          <button type="button" (click)="modalEdit.open('lg'); editMember(member.mem_gen);" class="btn btn-success" >
+            แก้ไข
+          </button>
           <input type="button" (click) = "deleteMember(member.mem_gen)" value="ลบ" class="btn btn-danger">
         </td>
       </tr>
@@ -116,8 +144,8 @@
     </li>
 </ul-->
 
-<nav aria-label="Page navigation">
-  <ul class="pagination">
+<nav aria-label="Page navigation" >
+  <ul class="pagination" >
     <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}"><a class="page-link" (click)="setPage(1)">First</a></li>
     <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}"><a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a></li>
     <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"><a class="page-link" (click)="setPage(page)">{{page}}</a></li>
@@ -125,14 +153,146 @@
     <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}"><a class="page-link" (click)="setPage(pager.totalPages)">Last</a></li>
   </ul>
 </nav>
-
-  <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-  </p>
 </div>
+<hr class="my-4">
 
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+    (onOpen)="opened()" #modalAdd>
+    <modal-header [show-close]="true">
+        เพิ่มข้อมูลผู้ใช้
+    </modal-header>
+    <modal-body>
+      <form (submit) = "createMember()" class="form-horizontal col-lg-6">
+        <fieldset>
+          <div class="form-group">
+            <label for="inputId" class="col-lg-2 control-label">รหัส</label>
+            <div class="col-lg-10">
+              <input type="text" [(ngModel)] = "id" id="inputId" placeholder="" name="id"  class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputTName" class="col-lg-4 control-label">คำนำหน้า</label>
+            <div class="col-lg-10">
+              <input type="text" [(ngModel)] = "tname" id="inputTName" placeholder="" name="tname"  class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputFName" class="col-lg-2 control-label">ชื่อ</label>
+            <div class="col-lg-10">
+              <input type="text" [(ngModel)] = "fname" id="inputFName" placeholder="" name="fname"  class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputLName" class="col-lg-2 control-label">นามสกุล</label>
+            <div class="col-lg-10">
+              <input type="text" [(ngModel)] = "lname" id="inputLName" placeholder="" name="lname"  class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+              <label for="inputAge" class="col-lg-2 control-label">อายุ</label>
+              <div class="col-lg-10">
+                <input type="text" [(ngModel)] = "age" id="inputAge" placeholder="" name="age"  class="form-control">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+              <div class="col-lg-10">
+                <input type="text" [(ngModel)] = "email" id="inputEmail" placeholder="" name="email"  class="form-control">
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="inputEmail" class="col-lg-4 control-label">วันเดือนปีเกิด</label>
+            <div class="col-lg-10">
+              <my-date-picker name="mydate" (dateChanged)="onBirthDateChanged($event)"
+                          [selDate]="birthDate"></my-date-picker>
+            </div>
+          </div>
+          <br>
+          <!--div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">
+                  <input type="submit" class="btn btn-primary" value="เพิ่ม">
+                  <a [routerLink]="['/members']" routerLinkActive="active">
+                    <input type="button" value="ยกเลิก" class="btn">
+                  </a>
+              </div>
+          </div-->
+        </fieldset>
+      </form>
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modalAdd.dismiss()">ยกเลิก</button>
+      <button type="button" class="btn btn-primary" (click)="modalAdd.close(); createMember();">เพิ่ม</button>
+  </modal-footer>
+</modal>
 
-
-
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+    (onOpen)="opened()" #modalEdit>
+    <modal-header [show-close]="true">
+        แก้ไขข้อมูลผู้ใช้
+    </modal-header>
+    <modal-body>
+      <form (submit) = "updateMember(editgen)" class="form-horizontal col-lg-6">
+        <fieldset>
+      <div class="form-group">
+        <label for="inputId" class="col-lg-2 control-label">รหัส</label>
+        <div class="col-lg-10">
+          <input type="text" [(ngModel)] = "editid" id="inputId" placeholder="id" name="id"  class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputTName" class="col-lg-4 control-label">คำนำหน้า</label>
+        <div class="col-lg-10">
+          <input type="text" [(ngModel)] = "edittname" id="inputTName" placeholder="TName" name="tname"  class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputFName" class="col-lg-2 control-label">ชื่อ</label>
+        <div class="col-lg-10">
+          <input type="text" [(ngModel)] = "editfname" id="inputFName" placeholder="FName" name="fname"  class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputLName" class="col-lg-2 control-label">นามสกุล</label>
+        <div class="col-lg-10">
+          <input type="text" [(ngModel)] = "editlname" id="inputLName" placeholder="LName" name="lname"  class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+          <label for="inputAge" class="col-lg-2 control-label">อายุ</label>
+          <div class="col-lg-10">
+            <input type="text" [(ngModel)] = "editage" id="inputAge" placeholder="Age" name="age"  class="form-control">
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+          <div class="col-lg-10">
+            <input type="text" [(ngModel)] = "editemail" id="inputEmail" placeholder="Email" name="email"  class="form-control">
+          </div>
+      </div>
+      <br>
+    <div class="form-group">
+        <label for="inputEmail" class="col-lg-4 control-label">วันเดือนปีเกิด</label>
+        <div class="col-lg-10">
+          <my-date-picker name="mydate" (dateChanged)="onSelDateChanged($event)"
+                      [selDate]="selDate"></my-date-picker>
+        </div>
+      </div>
+        <br>
+      <!--div class="form-group">
+          <div class="col-lg-10 col-lg-offset-2">
+              <input type="submit" class="btn btn-primary" value="ปรับปรุง">
+              <a [routerLink]="['/members']" routerLinkActive="active">
+                <input type="button" value="ยกเลิก" class="btn">
+              </a>
+          </div>
+        </div-->
+      <div class="form-group">
+    </div>  
+      </fieldset>
+    </form>
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modalEdit.dismiss()">ยกเลิก</button>
+      <button type="button" class="btn btn-primary" (click)="modalEdit.close(); updateMember(editgen);">ปรับปรุง</button>
+  </modal-footer>
+</modal>

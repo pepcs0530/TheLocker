@@ -19,7 +19,8 @@ export class EditMembersComponent implements OnInit {
       dateFormat: 'dd/mm/yyyy',
   };  
   
-  private selDate:Object;
+  selDate:Object;
+  
   editMembers: Member[];
   member: Member;
   editid: any;

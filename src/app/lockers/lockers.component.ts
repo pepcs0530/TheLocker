@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgModule, Directive} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {RouterModule,Router,Routes} from "@angular/router";
+import {RouterModule, Router, Routes} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { LockerService } from '../locker.service';
@@ -11,12 +11,16 @@ import { Member } from '../member';
 import { PagerService } from '../pager.service';
 import { Locker } from '../locker';
 
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 
-import { ReportService } from "../report.service";
+import { ReportService } from '../report.service';
+
+import {ModalModule} from '../../../src/ng2-bs4-modal/ng2-bs4-modal.module';
+
+import { ModalComponent } from '../../ng2-bs4-modal/components/modal';
 
 @NgModule({
-  imports: [ BrowserModule,FormsModule ],
+  imports: [ BrowserModule, FormsModule ],
   declarations: [ LockersComponent ],
   bootstrap: [ LockersComponent ]
 })
@@ -30,9 +34,10 @@ import { ReportService } from "../report.service";
 export class LockersComponent implements OnInit {
 
   lockers: Locker[];
+  editLockers: Locker[];
 
-  ses_value : string;
-  ses_nameValue : string;
+  ses_value: string;
+  ses_nameValue: string;
 
   // array of all items to be paged
   private allItems: any[];
@@ -42,6 +47,21 @@ export class LockersComponent implements OnInit {
 
   // paged items
   pagedItems: any[];
+
+  //filter
+  inputName: any ;
+
+  //dropdown pagesize
+  pageSizeList: any;  
+  inputPageSize:number=5; 
+
+
+  editId: any;
+  editGen: any;
+  editName: any;
+  editStatus: any;
+  editRfidGen: any;
+  lockerForm: FormGroup;
 
   constructor(private lockerService: LockerService, private pagerService: PagerService, private reportService: ReportService,
     private formBuilder: FormBuilder,
@@ -74,7 +94,8 @@ export class LockersComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.getLockers()
+    this.getLockers();
+    this.getPageList();
   }
 
   logout(){
@@ -114,7 +135,7 @@ export class LockersComponent implements OnInit {
     }
 
     // get pager object from service
-    this.pager = this.pagerService.getPager(this.allItems.length, page);
+    this.pager = this.pagerService.getPager(this.allItems.length, page, this.inputPageSize);
     console.log(this.pager)
 
     // get current page of items
@@ -269,9 +290,151 @@ export class LockersComponent implements OnInit {
   report() {
     console.log("---START generateReport()---");
 
-    this.reportService.getReport();
+    //this.reportService.getReport();
 
     console.log("---END generateReport()---");
   }
+
+  data = <any>{
+  };
+  searchLocker(keyword:string){
+    
+    console.log("---START searchLocker()---")
+    this.data = {
+      keyword : keyword
+    }
+    const findMember ={
+      keyword: this.data.keyword
+    }
+
+    this.lockerService.getLockerByCond(findMember)
+        .subscribe(
+          data => {
+            console.log(data);
+            if(data[0] != null){
+              this.allItems = data;
+              this.setPage(1); 
+            }else{
+              alert('ไม่พบข้อมูล');
+            }
+          },
+          error => console.log("Error :: " + error)
+        ) 
+    console.log("---END searchLocker()---")
+  }
+
+  //dropdown pagesize
+  getPageList(){   
+    this.pageSizeList=[    
+      {    
+        "Id": 1,    
+        "Name": "1"    
+      },    
+      {    
+        "Id": 5,    
+        "Name": "5"    
+      },    
+      {    
+        "Id": 10,    
+        "Name": "10"    
+      },    
+      {    
+        "Id": 15,    
+        "Name": "15"    
+      },    
+      {    
+        "Id": 30,    
+        "Name": "30"    
+      },    
+      {    
+        "Id": 50,    
+        "Name": "50"    
+      }        
+    ]  
+  }
+
+  selectPageSize(){
+    // alert(this.inputPageSize);
+    this.setPage(1);
+  }
+
+  click(locker: any) {
+    // alert(locker);
+  }
+
+  editLocker(id: any) {
+    if (id) {
+      this.lockerService.getLockerByPk(id)
+        .subscribe(
+          lockers => {
+            this.editLockers = lockers;
+            this.editId = lockers[0].loc_id;
+            this.editName = lockers[0].loc_name;
+            this.editStatus = lockers[0].loc_status;
+            this.editRfidGen = lockers[0].rfid_gen;
+          }
+        );
+
+        this.editGen = id;
+    }
+  }
+
+  updateLocker(id: any) {
+    console.log('---START updateLocker---');
+
+    const editLocker = {
+      loc_status: this.editStatus
+    };
+    this.lockerService.updateLocker(editLocker, id).subscribe(
+      data => {
+        alert('ปรับปรุงข้อมูลเรียบร้อย');
+        this.getLockers();
+       },
+       error => {
+         console.error('Error updating locker!');
+         return Observable.throw(error);
+       }
+    );
+
+    console.log('---END updateLocker---');
+  }
+
+  // tslint:disable-next-line:member-ordering
+  @ViewChild('modal')
+    modal: ModalComponent;
+    // tslint:disable-next-line:member-ordering
+    modalEdit: ModalComponent;
+    // modal : ElementRef;
+    items: string[] = ['item1', 'item2', 'item3'];
+    selected: string;
+    output: string;
+
+    index: number = 0;
+    backdropOptions = [true, false, 'static'];
+
+    animation: boolean = true;
+    keyboard: boolean = true;
+    backdrop: string | boolean = true;
+
+    closed() {
+      this.output = '(closed) ' + this.selected;
+      // this.createMember();
+    }
+
+    dismissed() {
+        this.output = '(dismissed)';
+    }
+
+    opened() {
+        this.output = '(opened)';
+    }
+
+    navigate() {
+        this.router.navigateByUrl('/');
+    }
+
+    open() {
+      this.modal.open();
+    }
 
 }

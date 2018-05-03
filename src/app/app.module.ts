@@ -19,6 +19,8 @@ import { MessageService } from './message.service';
 import { MemberService } from './member.service';
 import { KeycardService } from './keycard.service';
 
+import { Config } from './config';
+
 import { EditMembersComponent } from './members/edit-members/edit-members.component';
 import { AddMembersComponent } from './members/add-members/add-members.component';
 
@@ -55,7 +57,7 @@ import { ReportsComponent } from './reports/reports.component';
     ModalModule,
     MyDatePickerModule
   ],
-  providers: [ UserService, MessageService, MemberService, KeycardService ],
+  providers: [ UserService, MessageService, MemberService, KeycardService, Config],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -40,7 +40,7 @@ export class AddMembersComponent implements OnInit {
         dateFormat: 'dd/mm/yyyy',
     };  
 
-    private birthDate:Object;
+    birthDate:Object;
 
     //public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDay() } };
     //public model: any = { date: { year: 2018, month: 9, day: 2 } };

@@ -24,9 +24,11 @@ const routes: Routes = [
   { path: 'users', component: UsersComponent },
   { path: 'login', component: LoginComponent },
   { path: 'members', component: MembersComponent },
+  { path: 'members/search', component: MembersComponent },
   { path: 'members/new', component: AddMembersComponent},
   { path: 'members/:mem_gen', component: EditMembersComponent},
   { path: 'keycards', component: KeycardsComponent },
+  { path: 'keycards/:rfid_id', component: KeycardsComponent },
   { path: 'lockers', component: LockersComponent },
   { path: 'reports', component: ReportsComponent }
 

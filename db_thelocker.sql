@@ -16,6 +16,19 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_thelocker` /*!40100 DEFAULT CHARACTE
 
 USE `db_thelocker`;
 
+/*Table structure for table `tb_current_tag_rfid` */
+
+DROP TABLE IF EXISTS `tb_current_tag_rfid`;
+
+CREATE TABLE `tb_current_tag_rfid` (
+  `cur_tag_gen` int(11) NOT NULL,
+  `cur_tag_id` varchar(50) DEFAULT NULL,
+  `cur_tag_updDt` datetime DEFAULT NULL,
+  PRIMARY KEY (`cur_tag_gen`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_current_tag_rfid` */
+
 /*Table structure for table `tb_locker` */
 
 DROP TABLE IF EXISTS `tb_locker`;
@@ -61,8 +74,8 @@ CREATE TABLE `tb_member` (
 /*Data for the table `tb_member` */
 
 insert  into `tb_member`(`mem_gen`,`mem_id`,`mem_tname`,`mem_fname`,`mem_lname`,`mem_age`,`mem_email`,`mem_uname`,`mem_pass`,`mem_useflg`,`mem_birthdate`) values 
-(1,'m001','นาย','อภิวิชญ์','สังข์เมือง',11,'api@test.com','admin','1234','1','1993-03-31'),
-(2,'m002','ผอ.','ทดสอบ','ระบบ',22,'test@test.com',NULL,NULL,'1',NULL),
+(1,'m001','นาย','อภิวิชญ์','สังข์เมือง',11,'api@test.com','admin','1234','0','1993-03-31'),
+(2,'m002','ผอ.','ทดสอบ','ระบบ',22,'test@test.com',NULL,NULL,'0',NULL),
 (3,'m003','ดร.','ไม่รู้','สินะ',30,'mairu@test.com',NULL,NULL,'1',NULL),
 (5,'m005','นาย','เอ','บี',44,'a.b@t.com',NULL,NULL,'1',NULL),
 (6,'m006','นางสาว','แดง','มากมาย',1,'red.m@t.com',NULL,NULL,'1',NULL),
@@ -89,12 +102,14 @@ CREATE TABLE `tb_rfid` (
   `rfid_status` varchar(1) DEFAULT NULL,
   `mem_gen` int(11) DEFAULT NULL,
   PRIMARY KEY (`rfid_gen`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_rfid` */
 
 insert  into `tb_rfid`(`rfid_gen`,`rfid_id`,`rfid_status`,`mem_gen`) values 
-(1,'RFID0001','1',29);
+(1,'RFID0001','1',29),
+(2,'RFID0002','1',2),
+(7,'5a2bb59a','1',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

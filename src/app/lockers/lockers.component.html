@@ -1,4 +1,4 @@
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -26,38 +26,87 @@
   </div>
 </nav>
 <hr class="my-4"/>
-<form target="_blank" action="www.google.com">
-  <input type="button" (click) = "report()" value="ออกรายงาน" class="btn btn-info">
-</form>  
+
 <div class="jumbotron">
   <h4>ข้อมูลสถานะตู้ล็อคเกอร์</h4>
+  <div class="form-group">
+    <div class="form-row">
+    <div style="float: left; width: 80%;">
+        <label>ค้นหาล็อคเกอร์ : </label>
+        <input  type="text"  id="inputName" [(ngModel)]="inputName"/>
+
+        <!--input type="button" (click)="FilterByName()" value="ค้นหา" class="btn btn-default"/-->
+        <button type="button" (click)="searchLocker(inputName)" class="btn btn-default" >
+          ค้นหา
+        </button>
+    </div>
+    <div style="float: right; width: 20%;">
+      แสดงจำนวน : <select style="width:30%; display:unset;" id="Id" #Id="ngModel" class="hideLabel form-control" [(ngModel)]="inputPageSize" name="Id" (change)="selectPageSize();">  
+          <!--option selected="" value=""></option-->  
+          <option [ngValue]="k.Id" *ngFor="let k of pageSizeList">  
+                  {{k.Name}}  
+          </option>  
+        </select> 
+    </div>
+    </div>
+ </div>
   <table class="table table-hover table-striped">
     <thead>
       <tr>
         <th scope="col">รหัส</th>
         <th scope="col">ตู้</th>
         <th scope="col">สถานะ</th>
+        <th scope="col">แก้ไข</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor = "let locker of lockers" (click)="click(locker)">
+      <tr *ngFor = "let locker of lockers" (click)="click(locker.loc_id)">
         <th scope="row">{{locker.loc_id}}</th>
         <td>{{locker.loc_name}}</td>
         <td>
           <div *ngIf="locker.loc_status == 'Y' "><font color='green'>ว่าง</font></div>
           <div *ngIf="locker.loc_status == 'N' "><font color='red'>ไม่ว่าง</font></div>
         </td>
+        <td>
+          <button type="button" (click)="modalEdit.open('lg'); editLocker(locker.loc_gen);" class="btn btn-success" >
+            แก้ไข
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
   <nav aria-label="Page navigation">
-      <ul class="pagination">
-        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}"><a class="page-link" (click)="setPage(1)">First</a></li>
-        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}"><a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a></li>
-        <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"><a class="page-link" (click)="setPage(page)">{{page}}</a></li>
-        <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}"><a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a></li>
-        <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}"><a class="page-link" (click)="setPage(pager.totalPages)">Last</a></li>
-      </ul>
-    </nav>
+    <ul class="pagination">
+      <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}"><a class="page-link" (click)="setPage(1)">First</a></li>
+      <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}"><a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a></li>
+      <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"><a class="page-link" (click)="setPage(page)">{{page}}</a></li>
+      <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}"><a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a></li>
+      <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}"><a class="page-link" (click)="setPage(pager.totalPages)">Last</a></li>
+    </ul>
+  </nav>
 </div>
+<hr class="my-4">
+
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+    (onOpen)="opened()" #modalEdit>
+  <modal-header [show-close]="true">
+      แก้ไขสถานะตู้ล็อคเกอร์
+  </modal-header>  
+  <modal-body>
+    <form (submit) = "updateLocker(editGen)" class="form-horizontal col-lg-6">
+      <fieldset>
+        <div class="form-group">
+            <label for="inputId" class="col-lg-2 control-label">สถานะ</label>
+            <div class="col-lg-10">
+              <input type="text" [(ngModel)] = "editStatus" id="inputStatus" placeholder="status" name="status"  class="form-control">
+            </div>
+        </div>
+      </fieldset>
+    </form>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modalEdit.dismiss()">ยกเลิก</button>
+    <button type="button" class="btn btn-primary" (click)="modalEdit.close(); updateLocker(editGen);">ปรับปรุง</button>
+  </modal-footer>
+</modal>
 

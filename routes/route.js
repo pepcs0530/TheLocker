@@ -1,9 +1,9 @@
 ///// required modules 
-
+var config = require('../config')
 var express = require('express')
 var app = express()
 
-var client = require("jsreport-client")("http://localhost:5488", "admin", "password")
+var client = require("jsreport-client")("http://"+config.report.host+":"+config.report.port, "admin", "password")
 
 //--------------------START MEMBER ROUTE-----------------------
 
@@ -55,6 +55,43 @@ app.get('/edit/(:id)', function(req, res, next){
 			}			
 		})
 		console.log('---END SHOW EDIT MEMBER FORM---')	
+
+	})
+})
+
+// SHOW MEMBER BY CONDITION
+app.post('/search', function(req, res, next){
+
+	console.log('---START SHOW MEMBER BY CONDITION---')	
+
+	var keyword = req.sanitize('keyword').escape().trim();
+
+	console.log('keyword : ', keyword);
+
+	req.getConnection(function(error, conn) {
+		conn.query("SELECT * FROM tb_member WHERE (mem_fname like '%" + keyword + "%' or mem_lname like '%"+ keyword +"%') " , function(err, rows, fields) {
+			if(err) {
+				console.log(err)
+				throw err
+			}
+			
+			// if user not found
+			if (rows.length <= 0) {
+				req.flash('error', 'Member not found with keyword = ' + keyword)
+				console.log('Member not found with keyword = ' + keyword)
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+			}
+			else { // if member found
+				// render to views/member/edit.ejs template file
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+				
+			}			
+		})
+		console.log('---END SHOW MEMBER BY CONDITION---')	
 
 	})
 })
@@ -366,6 +403,133 @@ app.get('/qryLockers', function(req, res, next) {
 	})
 })
 
+// SHOW LOCKER BY CONDITION
+app.post('/searchLocker', function(req, res, next){
+
+	console.log('---START SHOW LOCKER BY CONDITION---')	
+
+	var keyword = req.sanitize('keyword').escape().trim();
+
+	console.log('keyword : ', keyword);
+
+	req.getConnection(function(error, conn) {
+		
+		conn.query(" SELECT * FROM tb_locker WHERE (loc_id LIKE '%" + keyword + "%' OR loc_name LIKE '%" + keyword + "%' ) ORDER BY loc_gen ASC ", function(err, rows, fields) {
+
+			if(err) {
+				console.log(err)
+				throw err
+			}
+			
+			// if user not found
+			if (rows.length <= 0) {
+				req.flash('error', 'Locker not found with keyword = ' + keyword)
+				console.log('Locker not found with keyword = ' + keyword)
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+			}
+			else { // if member found
+				// render to views/member/edit.ejs template file
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+				
+			}			
+		})
+		console.log('---START SHOW LOCKER BY CONDITION---')	
+
+	})
+})
+
+// SHOW EDIT LOCKER BY PK FORM
+app.get('/getLockerByPk/(:id)', function(req, res, next){
+
+	console.log('---START SHOW EDIT LOCKER BY PK FORM---')	
+
+	req.getConnection(function(error, conn) {
+		conn.query('SELECT * FROM tb_locker WHERE loc_gen = ' + req.params.id, function(err, rows, fields) {
+			if(err) {
+				console.log(err)
+				throw err
+			}
+			
+			// if user not found
+			if (rows.length <= 0) {
+				req.flash('error', 'Locker not found with id = ' + req.params.id)
+				console.log('Locker not found with id = ' + req.params.id)
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+			}
+			else { // if locker found
+				// render to views/member/edit.ejs template file
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+				
+			}			
+		})
+		console.log('---END SHOW EDIT LOCKER BY PK FORM---')	
+
+	})
+})
+
+// EDIT LOCKER PUT ACTION
+app.put('/editLocker/(:id)', function(req, res, next) {
+
+	console.log('---EDIT LOCKER PUT ACTION---')
+
+    var errors = req.validationErrors()
+    var locker = {
+		loc_status: req.sanitize('loc_status').escape().trim()
+	}
+    
+	console.log(locker);
+	console.log(errors)
+    if( !errors ) {   //No errors were found.  Passed Validation!
+		
+		/********************************************
+		 * Express-validator module
+		 
+		req.body.comment = 'a <span>comment</span>';
+		req.body.username = '   a user    ';
+
+		req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
+		req.sanitize('username').trim(); // returns 'a user'
+		********************************************/
+		
+		req.getConnection(function(error, conn) {
+			conn.query('UPDATE tb_locker SET ? WHERE loc_gen = ' + req.params.id, locker, function(err, result) {
+				//if(err) throw err
+				if (err) {
+					req.flash('error', err)
+					console.log(locker)
+					console.log(err)
+					
+				} else {
+					req.flash('success', 'Data updated successfully!')
+					
+					console.log(locker)
+					res.end();
+					console.log('Data updated successfully!')
+					
+				}
+			})
+
+		})
+	}
+	else {   //Display errors to user
+		var error_msg = ''
+		errors.forEach(function(error) {
+			error_msg += error.msg + '<br>'
+		})
+		req.flash('error', error_msg)
+	
+        console.log(error_msg)
+    }
+})
+
 //--------------------END LOCKER ROUTE-----------------------
 
 //--------------------START KEYCARD ROUTE-----------------------
@@ -481,6 +645,290 @@ app.delete('/deleteKeycard/(:id)', function(req, res, next) {
 		})
 
 	})
+})
+
+// SHOW KEYCARD BY CONDITION
+app.post('/searchKeycard', function(req, res, next){
+
+	console.log('---START SHOW KEYCARD BY CONDITION---')	
+
+	var keyword = req.sanitize('keyword').escape().trim();
+
+	console.log('keyword : ', keyword);
+
+	req.getConnection(function(error, conn) {
+		//conn.query("SELECT * FROM tb_member WHERE (mem_fname like '%" + keyword + "%' or mem_lname like '%"+ keyword +"%') " , function(err, rows, fields) {
+		conn.query(" SELECT * FROM tb_rfid r INNER JOIN tb_member m ON m.mem_gen = r.mem_gen "
+			+ " WHERE (m.mem_fname LIKE '%" + keyword + "%' OR m.mem_lname LIKE '%" + keyword + "%' OR r.rfid_id LIKE '%" + keyword + "%') "
+			+ " ORDER BY rfid_gen ASC ", function(err, rows, fields) {
+
+			if(err) {
+				console.log(err)
+				throw err
+			}
+			
+			// if user not found
+			if (rows.length <= 0) {
+				req.flash('error', 'Keycard not found with keyword = ' + keyword)
+				console.log('Keycard not found with keyword = ' + keyword)
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+			}
+			else { // if member found
+				// render to views/member/edit.ejs template file
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+				
+			}			
+		})
+		console.log('---END SHOW KEYCARD BY CONDITION---')	
+
+	})
+})
+
+// SHOW KEYCARD FOR CHECK DUP
+app.post('/searchKeycardCheckDup', function(req, res, next){
+	console.log('---START SHOW KEYCARD FOR CHECK DUP---')	
+
+	var keyword = req.sanitize('keyword').escape().trim();
+
+	console.log('keyword : ', keyword);
+
+	req.getConnection(function(error, conn) {
+		//conn.query("SELECT * FROM tb_member WHERE (mem_fname like '%" + keyword + "%' or mem_lname like '%"+ keyword +"%') " , function(err, rows, fields) {
+		conn.query(" SELECT * FROM tb_rfid r  "
+			+ " WHERE ( r.rfid_id LIKE '%" + keyword + "%' ) "
+			+ " ORDER BY rfid_gen ASC ", function(err, rows, fields) {
+
+			if(err) {
+				console.log(err)
+				throw err
+			}
+			
+			// if user not found
+			if (rows.length <= 0) {
+				req.flash('error', 'Keycard not found with keyword = ' + keyword)
+				console.log('Keycard not found with keyword = ' + keyword)
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+			}
+			else { // if member found
+				// render to views/member/edit.ejs template file
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+				
+			}			
+		})
+		console.log('---END SHOW SHOW KEYCARD FOR CHECK DUP---')	
+
+	})
+})
+
+// SHOW KEYCARD BY CONDITION
+app.post('/searchRightMember', function(req, res, next){
+
+	console.log('---START SHOW RIGHT MEMBER BY CONDITION---')	
+
+	var keyword = req.sanitize('keyword').escape().trim();
+
+	console.log('keyword : ', keyword);
+
+	req.getConnection(function(error, conn) {
+		
+		conn.query(" SELECT * FROM tb_member  "
+			+ " WHERE mem_useflg = '1' AND (mem_id LIKE '%" + keyword + "%' OR mem_fname LIKE '%" + keyword + "%' OR mem_lname LIKE '%" + keyword + "%') "
+			+ " ORDER BY mem_gen ASC ", function(err, rows, fields) {
+
+			if(err) {
+				console.log(err)
+				throw err
+			}
+			
+			// if user not found
+			if (rows.length <= 0) {
+				req.flash('error', 'Right member not found with keyword = ' + keyword)
+				console.log('Right member not found with keyword = ' + keyword)
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+			}
+			else { // if member found
+				// render to views/member/edit.ejs template file
+				//console.log(rows)
+				res.end(JSON.stringify(rows));
+				console.log(rows)
+				
+			}			
+		})
+		console.log('---START SHOW RIGHT MEMBER BY CONDITION---')	
+
+	})
+})
+
+// READ KEYCARD FROM RFID
+app.get('/readKeycards/(:id)', function(req, res, next) {
+	res.write(JSON.stringify(req.params.id));
+	res.end();
+})
+
+// QUERY CURRENT TAGGING KEYCARD INDEX 0 GET ACTION
+app.get('/qryCurrentTaggingKeycard', function(req, res, next) {
+	console.log('---START QUERY CURRENT TAGGING KEYCARD INDEX 0 GET ACTION---')
+	req.getConnection(function(error, conn) {
+		conn.query('SELECT * FROM tb_current_tag_rfid WHERE cur_tag_gen = 0 ORDER BY cur_tag_gen ASC',function(err, rows, fields) {
+			//if(err) throw err
+			if (err) {
+				console.log(err)
+				req.flash('error', err)
+				
+			} else {
+				//console.log(rows)
+				//res.end(JSON.stringify(rows));
+
+				res.write(JSON.stringify(rows));
+				res.end();
+			}
+		})
+	})
+	console.log('---END QUERY CURRENT TAGGING KEYCARD INDEX 0 GET ACTION---')
+})
+
+// ADD CURRENT TAGGING KEYCARD POST ACTION
+app.get('/insertCurrentTaggingKeycard/(:id)', function(req, res, next){
+	console.log('---START ADD CURRENT TAGGING KEYCARD POST ACTION---')
+
+	var errors = req.validationErrors()
+    var keycard = {
+		cur_tag_id : req.params.id
+	}
+
+	console.log(keycard);
+	console.log(errors)
+    if( !errors ) { 
+		req.getConnection(function(error, conn) {
+			conn.query('INSERT INTO tb_current_tag_rfid SET ? , cur_tag_updDt = CURRENT_TIMESTAMP() ' , keycard, function(err, result) {
+				//if(err) throw err
+				if (err) {
+					req.flash('error', err)
+					console.log(keycard)
+					console.log(err)
+					
+				} else {
+					req.flash('success', 'Data inserted successfully!')
+					
+					console.log(keycard)
+					res.end();
+					console.log('Data inserted successfully!')
+					
+				}
+			})
+
+		})
+	}else {   //Display errors to user
+		var error_msg = ''
+		errors.forEach(function(error) {
+			error_msg += error.msg + '<br>'
+		})
+		req.flash('error', error_msg)
+	
+        console.log(error_msg)
+	}
+	console.log('---END ADD CURRENT TAGGING KEYCARD POST ACTION---')
+})
+
+// EDIT CURRENT TAGGING KEYCARD PUT ACTION
+app.put('/updateCurrentTaggingKeycard/(:id)', function(req, res, next) {
+	console.log('---START EDIT CURRENT TAGGING KEYCARD PUT ACTION---')
+
+    var errors = req.validationErrors()
+    var keycard = {
+		cur_tag_id : req.params.id
+	}
+
+	console.log(keycard);
+	console.log(errors)
+    if( !errors ) { 
+		req.getConnection(function(error, conn) {
+			conn.query('UPDATE tb_current_tag_rfid SET ? , cur_tag_updDt = CURRENT_TIMESTAMP()  WHERE cur_tag_id = ' + '"'+ req.params.id +'"', keycard, function(err, result) {
+				//if(err) throw err
+				if (err) {
+					req.flash('error', err)
+					console.log(keycard)
+					console.log(err)
+					
+				} else {
+					req.flash('success', 'Data updated successfully!')
+					
+					console.log(keycard)
+					res.end();
+					console.log('Data updated successfully!')
+					
+				}
+			})
+
+		})
+	}else {   //Display errors to user
+		var error_msg = ''
+		errors.forEach(function(error) {
+			error_msg += error.msg + '<br>'
+		})
+		req.flash('error', error_msg)
+	
+        console.log(error_msg)
+	}
+	console.log('---END EDIT CURRENT TAGGING KEYCARD PUT ACTION---')
+})
+
+// DELETE CURRENT TAGGING KEYCARD DELETE ACTION
+app.delete('/deleteCurrentTaggingKeycard', function(req, res, next) {
+
+	console.log('---START DELETE CURRENT TAGGING KEYCARD DELETE ACTION---')
+
+	req.getConnection(function(error, conn) {
+		conn.query('DELETE FROM tb_current_tag_rfid ', function(err, result) {
+			//if(err) throw err
+			if (err) {
+				req.flash('error', err)
+				// redirect to users list page
+				console.log(err)
+			} else {
+				req.flash('success', 'Data deleted successfully! ')
+				// redirect to users list page
+				res.end();
+				console.log('Data deleted successfully! ' )
+			}
+		})
+
+	})
+	console.log('---END DELETE CURRENT TAGGING KEYCARD DELETE ACTION---')
+})
+
+// DELETE CURRENT TAGGING KEYCARD DELETE ACTION
+app.get('/deleteCurrentTaggingKeycard', function(req, res, next) {
+
+	console.log('---START DELETE CURRENT TAGGING KEYCARD DELETE ACTION---')
+
+	req.getConnection(function(error, conn) {
+		conn.query('DELETE FROM tb_current_tag_rfid ', function(err, result) {
+			//if(err) throw err
+			if (err) {
+				req.flash('error', err)
+				// redirect to users list page
+				console.log(err)
+			} else {
+				req.flash('success', 'Data deleted successfully! ')
+				// redirect to users list page
+				res.end();
+				console.log('Data deleted successfully! ' )
+			}
+		})
+
+	})
+	console.log('---END DELETE CURRENT TAGGING KEYCARD DELETE ACTION---')
 })
 
 //--------------------END KEYCARD ROUTE-----------------------

@@ -7,7 +7,8 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "target": "es6",
+    //"module": "system",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -23,6 +24,7 @@
         "components",
         "directives",
         "src/test",
+        "typings/main",
         "**/*.spec.ts"
     ],
     "include": [

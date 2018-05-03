@@ -5,14 +5,18 @@ import 'rxjs/add/operator/map';
 import { Observable } from "rxjs/Observable";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Resolve } from '@angular/router/src/interfaces';
+import { Config } from './config';
 
 @Injectable()
 export class LockerService {
 
   // api url to get the list of lockers
-  private _getURL = "http://localhost:4001/api/";
+  //private _getURL = "http://localhost:4001/api/";
+  private _getURL :string;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private config: Config) { 
+    this._getURL = "http://"+config.db_host+":"+config.db_port+"/api/";
+  }
 
   /// get list of lockers
   getLockers(): Observable<Locker[]> {
@@ -81,6 +85,52 @@ export class LockerService {
       .map((res: Response) => res.json()
       );
   
+  }
+
+  /// get list of locker by condition
+  getLockerByCond(keyword:any): Observable<Locker[]> {
+    
+    console.log(keyword);
+
+    let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(keyword);
+
+    console.log(body);
+    
+    return this.http
+      .post(this._getURL + 'searchLocker/' , body, options )
+      .map((res: Response) => res.json()
+    );
+      
+  }
+
+  /// get locker by pk
+  getLockerByPk(locGen: number): Observable<Locker[]> {
+
+    const headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+    const options = new RequestOptions({ headers: headers });
+
+      return this.http
+        .get(this._getURL + 'getLockerByPk/' + locGen, options)
+          .map(res => {
+            return <Locker[]>res.json();
+        });
+
+  }
+
+  /// edit and update locker details
+  updateLocker(updateLocker: any, locGen) {
+
+    let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(updateLocker);
+
+    console.log('update', updateLocker);
+
+  return this.http
+    .put(this._getURL + 'editLocker/' + locGen, body, options );
+    //.map((res: Response) => res.json());
   }
 
   private handleError(error: any) {

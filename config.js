@@ -7,8 +7,14 @@ var config = {
 		db: 	  'db_thelocker' 		// your database name
 	},
 	server: {
-		host: '127.0.0.1',
+		//host: '127.0.0.1',
+		host: '0.0.0.0',
 		port: '4001'
+	},
+	report: {
+		//host: '127.0.0.1',
+		host: '0.0.0.0',
+		port: '5488'
 	}
 }
 

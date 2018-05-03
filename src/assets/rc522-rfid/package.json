@@ -1,0 +1,76 @@
+{
+  "_from": "git+https://github.com/SebastianPozoga/rc522-rfid.git",
+  "_id": "rc522-rfid@14.1.10",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/rc522-rfid",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "rc522-rfid@git+https://github.com/SebastianPozoga/rc522-rfid.git",
+    "name": "rc522-rfid",
+    "escapedName": "rc522-rfid",
+    "rawSpec": "git+https://github.com/SebastianPozoga/rc522-rfid.git",
+    "saveSpec": "git+https://github.com/SebastianPozoga/rc522-rfid.git",
+    "fetchSpec": "https://github.com/SebastianPozoga/rc522-rfid.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/SebastianPozoga/rc522-rfid.git#d37a5a3b03e66fa6a0fcc3f39b93aeb57a8faaee",
+  "_spec": "rc522-rfid@git+https://github.com/SebastianPozoga/rc522-rfid.git",
+  "_where": "/home/pi",
+  "author": {
+    "name": "Sascha Brinkmann",
+    "email": "sascha.brinkmann@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/sbrinkmann/rc522-rfid/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "node.js module to access a rfid reader with rc522 chipset which is connected a raspberry pi",
+  "directories": {},
+  "engines": {
+    "node": ">=0.8.0 <0.13.0"
+  },
+  "gitHead": "",
+  "homepage": "https://github.com/sbrinkmann/rc522-rfid#readme",
+  "keywords": [
+    "rfid",
+    "rc522"
+  ],
+  "main": "./main",
+  "name": "rc522-rfid",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbrinkmann/rc522-rfid.git"
+  },
+  "scripts": {
+    "build-debug": "(node-gyp configure --debug && node-gyp rebuild --debug) || (exit 0)",
+    "clean": "((node-gyp clean) && (rm -rf node_modules)) || (exit 0)",
+    "install": "(node-gyp rebuild) || (exit 0)",
+    "preinstall": "(node-gyp configure) || (exit 0)"
+  },
+  "version": "14.1.10",
+  "warnings": [
+    {
+      "code": "ENOTSUP",
+      "required": {
+        "node": ">=0.8.0 <0.13.0"
+      },
+      "pkgid": "rc522-rfid@14.1.10"
+    },
+    {
+      "code": "ENOTSUP",
+      "required": {
+        "node": ">=0.8.0 <0.13.0"
+      },
+      "pkgid": "rc522-rfid@14.1.10"
+    }
+  ]
+}

@@ -4,13 +4,17 @@ import 'rxjs/add/operator/map';
 import { Observable } from "rxjs/Observable";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Resolve } from '@angular/router/src/interfaces';
+import { Config } from './config';
 
 @Injectable()
 export class ReportService {
 
-  private _getURL = "http://localhost:5488/api/report";
+  //private _getURL = "http://localhost:5488/api/report";
+  private _getURL :string;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private config: Config) { 
+      this._getURL = "http://"+config.report_host+":"+config.report_port+"/api/report";
+  }
 
   getReport(conditions:any) {
   
