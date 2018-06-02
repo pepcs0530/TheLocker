@@ -383,7 +383,8 @@ export class LockersComponent implements OnInit {
     console.log('---START updateLocker---');
 
     const editLocker = {
-      loc_status: this.editStatus
+      loc_status: this.editStatus,
+      mem_gen: null
     };
     this.lockerService.updateLocker(editLocker, id).subscribe(
       data => {
@@ -397,6 +398,11 @@ export class LockersComponent implements OnInit {
     );
 
     console.log('---END updateLocker---');
+  }
+
+  setStatus(status: string) {
+    this.editStatus = status;
+    // alert(this.editStatus);
   }
 
   // tslint:disable-next-line:member-ordering

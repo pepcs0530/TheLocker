@@ -779,7 +779,7 @@ app.get('/readKeycards/(:id)', function(req, res, next) {
 app.get('/qryCurrentTaggingKeycard', function(req, res, next) {
 	console.log('---START QUERY CURRENT TAGGING KEYCARD INDEX 0 GET ACTION---')
 	req.getConnection(function(error, conn) {
-		conn.query('SELECT * FROM tb_current_tag_rfid WHERE cur_tag_gen = 0 ORDER BY cur_tag_gen ASC',function(err, rows, fields) {
+		conn.query('SELECT * FROM tb_current_tag_rfid WHERE cur_tag_gen = 0 AND (NOW() - cur_tag_updDt) < 5 ORDER BY cur_tag_gen ASC',function(err, rows, fields) {
 			//if(err) throw err
 			if (err) {
 				console.log(err)
@@ -945,5 +945,128 @@ app.get("/report", function(req, res, next) {
     });
 });
 //--------------------END REPORT ROUTE-----------------------
+
+//--------------------ANDROID-----------------------
+// SELECT CURRENT RFID by Android
+app.get('/getRFID', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+		   console.log('---START QUERY LIST OF MEMBER BY USERFLG---')
+	 conn.query('select * from tb_current_tag_rfid as tbc, tb_rfid as tbr where tbc.cur_tag_id = tbr.rfid_id and (now() - cur_tag_updDt) < 5 ',function(err, rows, fields) {
+	  //if(err) throw err
+	  if (err) {
+	   console.log(err)
+	   req.flash('error', err)
+	   
+	  } else {
+	   console.log(rows)
+	   res.end(JSON.stringify(rows));
+	  }
+	 })
+		   console.log('---END QUERY LIST OF MEMBER BY USERFLG---')
+	})
+   })
+
+   app.get('/confirmUseLocker/(:id)/(:lockerID)', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+		   console.log('---START QUERY CONFIRM USE LOCKER---')
+		   var sql ='UPDATE tb_locker set mem_gen = '+req.params.id +' ,loc_status = "Y" '+
+					  'where loc_id = "'+req.params.lockerID +'"';
+	 conn.query(sql, function(err, result) {
+	  //if(err) throw err
+	  if (err) {
+	   console.log(err)
+	   req.flash('error', err)
+	   
+	  } else {
+				   res.end("Update Complete");
+	   console.log('Data updated successfully!')
+	  }
+	 })
+		   console.log('---END CONFIRM USE LOCKER---')
+	})
+   })
+   
+   app.get('/unLockLocker/(:id)/(:lockerID)', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+		   console.log('---START QUERY CONFIRM USE UNLOCKER---')
+		   var sql ='UPDATE tb_locker set loc_status = "Y", mem_gen = null '+
+					  'where loc_id = "'+req.params.lockerID +'" AND '+
+					   'mem_gen = '+req.params.id
+	 conn.query(sql, function(err, result) {
+	  //if(err) throw err
+	  if (err) {
+	   console.log(err)
+	   req.flash('error', err)
+	   
+	  } else {
+				   res.end("Update Complete");
+	   console.log('Data updated successfully!')
+	  }
+	 })
+		   console.log('---END CONFIRM USE UNLOCKER---')
+	})
+   })
+   
+   app.get('/LockLocker/(:lockerID)', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+		   console.log('---START QUERY CONFIRM USE LOCKER---')
+		   var sql ='UPDATE tb_locker set loc_status = "N" '+
+					  'where loc_id = "'+req.params.lockerID +'"';
+	 conn.query(sql, function(err, result) {
+	  //if(err) throw err
+	  if (err) {
+	   console.log(err)
+	   req.flash('error', err)
+	   
+	  } else {
+				   res.end("Update Complete");
+	   console.log('Data updated successfully!')
+	  }
+	 })
+		   console.log('---END CONFIRM USE LOCKER---')
+	})
+   })
+
+   app.get('/getUserInfo/(:id)', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+        console.log('---START QUERY USER INFO---')
+		conn.query('select tbm.mem_tname,tbm.mem_fname,tbm.mem_lname, '+
+                   '(select count(*) from tb_locker where mem_gen = '+req.params.id+') mem_use '+
+                   'from tb_rfid tbr '+
+                   'inner join tb_member tbm '+
+                   'on tbr.mem_gen = tbm.mem_gen '+
+                   'where tbr.mem_gen = ' + req.params.id, function(err, rows, fields) {
+			//if(err) throw err
+			if (err) {
+				console.log(err)
+				req.flash('error', err)
+				
+			} else {
+				console.log(rows)
+				res.end(JSON.stringify(rows));
+			}
+		})
+        console.log('---END QUERY USER INFO---')
+	})
+})
+
+app.get('/getDepositLocker/(:id)', function(req, res, next) {
+	req.getConnection(function(error, conn) {
+        console.log('---START GET DEPOSIT---')
+		conn.query('select loc_id from tb_locker where mem_gen = ' + req.params.id, function(err, rows, fields) {
+			//if(err) throw err
+			if (err) {
+				console.log(err)
+				req.flash('error', err)
+				
+			} else {
+				console.log(rows)
+				res.end(JSON.stringify(rows));
+			}
+		})
+        console.log('---END GET DEPOSIT---')
+	})
+})
+//--------------------ANDROID-----------------------
 
 module.exports = app

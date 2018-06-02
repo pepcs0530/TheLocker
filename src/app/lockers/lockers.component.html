@@ -64,8 +64,8 @@
         <th scope="row">{{locker.loc_id}}</th>
         <td>{{locker.loc_name}}</td>
         <td>
-          <div *ngIf="locker.loc_status == 'Y' "><font color='green'>ว่าง</font></div>
-          <div *ngIf="locker.loc_status == 'N' "><font color='red'>ไม่ว่าง</font></div>
+          <div *ngIf="locker.loc_status == 'N' "><font color='green'>ว่าง</font></div>
+          <div *ngIf="locker.loc_status == 'Y' "><font color='red'>ไม่ว่าง</font></div>
         </td>
         <td>
           <button type="button" (click)="modalEdit.open('lg'); editLocker(locker.loc_gen);" class="btn btn-success" >
@@ -97,8 +97,15 @@
       <fieldset>
         <div class="form-group">
             <label for="inputId" class="col-lg-2 control-label">สถานะ</label>
-            <div class="col-lg-10">
+            <!--div class="col-lg-10">
               <input type="text" [(ngModel)] = "editStatus" id="inputStatus" placeholder="status" name="status"  class="form-control">
+            </div-->
+            <div class="btn-group">
+              <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="status">{{editStatus == 'Y' ? 'ไม่ว่าง' : 'ว่าง' }}</button>
+              <div class="dropdown-menu">
+                <a (click)="setStatus('N')" class="dropdown-item" >ว่าง</a>
+                <a (click)="setStatus('Y')" class="dropdown-item" >ไม่ว่าง</a>
+              </div>
             </div>
         </div>
       </fieldset>

@@ -1,6 +1,6 @@
 /*
 SQLyog Community v12.5.0 (64 bit)
-MySQL - 10.1.29-MariaDB : Database - db_thelocker
+MySQL - 10.1.23-MariaDB-9+deb9u1 : Database - db_thelocker
 *********************************************************************
 */
 
@@ -28,6 +28,9 @@ CREATE TABLE `tb_current_tag_rfid` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_current_tag_rfid` */
+
+insert  into `tb_current_tag_rfid`(`cur_tag_gen`,`cur_tag_id`,`cur_tag_updDt`) values 
+(0,'7a1bbe49','2018-05-13 09:49:45');
 
 /*Table structure for table `tb_locker` */
 
@@ -74,23 +77,23 @@ CREATE TABLE `tb_member` (
 /*Data for the table `tb_member` */
 
 insert  into `tb_member`(`mem_gen`,`mem_id`,`mem_tname`,`mem_fname`,`mem_lname`,`mem_age`,`mem_email`,`mem_uname`,`mem_pass`,`mem_useflg`,`mem_birthdate`) values 
-(1,'m001','นาย','อภิวิชญ์','สังข์เมือง',11,'api@test.com','admin','1234','0','1993-03-31'),
-(2,'m002','ผอ.','ทดสอบ','ระบบ',22,'test@test.com',NULL,NULL,'0',NULL),
+(1,'m001','นาย','อภิวิชญ์','สังข์เมือง',123,'api@test.com','admin','1234','1','1993-03-31'),
+(2,'m002','ผอ.','ทดสอบ','ระบบ',22,'test@test.com',NULL,NULL,'1',NULL),
 (3,'m003','ดร.','ไม่รู้','สินะ',30,'mairu@test.com',NULL,NULL,'1',NULL),
 (5,'m005','นาย','เอ','บี',44,'a.b@t.com',NULL,NULL,'1',NULL),
 (6,'m006','นางสาว','แดง','มากมาย',1,'red.m@t.com',NULL,NULL,'1',NULL),
-(7,'m007','นาย','สมชาย','ใจดี',2,'somchai.j@t.com',NULL,NULL,'0',NULL),
-(8,'m008','นาย','ไก่','ขันแต่เช้า',3,'kai.k@t.com',NULL,NULL,'0',NULL),
-(9,'m009','นางสาว','ปลา','สะลิด',4,'pla.s@t.com',NULL,NULL,'0',NULL),
-(10,'m0010','นาย','เขียว','โซดา',5,'kaew.s@t.com',NULL,NULL,'0',NULL),
-(11,'m0011','นาย','รี','เจนซี่',6,'re.j@t.com',NULL,NULL,'0',NULL),
-(12,'m0012','นางสาว','ดอก','ไม้งาม',7,'dok.m@t.com',NULL,NULL,'0',NULL),
-(13,'m0013','นาย','ทดเวลา','บาดเจ็บ',8,'tod.b@t.com',NULL,NULL,'0',NULL),
+(7,'m007','นาย','สมชาย','ใจดี',2,'somchai.j@t.com',NULL,NULL,'1',NULL),
+(8,'m008','นาย','ไก่','ขันแต่เช้า',3,'kai.k@t.com',NULL,NULL,'1',NULL),
+(9,'m009','นางสาว','ปลา','สะลิด',4,'pla.s@t.com',NULL,NULL,'1',NULL),
+(10,'m0010','นาย','เขียว','โซดา',5,'kaew.s@t.com',NULL,NULL,'1',NULL),
+(11,'m0011','นาย','รี','เจนซี่',6,'re.j@t.com',NULL,NULL,'1',NULL),
+(12,'m0012','นางสาว','ดอก','ไม้งาม',7,'dok.m@t.com',NULL,NULL,'1',NULL),
+(13,'m0013','นาย','ทดเวลา','บาดเจ็บ',8,'tod.b@t.com',NULL,NULL,'1',NULL),
 (25,'m001','qq','ww','ee',12,'apiwich.cs.kmitl@gmail.com',NULL,NULL,'1',NULL),
 (26,'m001','rr','tt','yy',33,'apiwich.cs.kmitl@gmail.com',NULL,NULL,'1',NULL),
 (27,'m001','hh','jj','kk',11,'apiwich.cs.kmitl@gmail.com',NULL,NULL,'1','1970-01-04'),
 (28,'m0020','นาย','อร่อย','เหาะ',123,'aroi.h@gmail.com',NULL,NULL,'1','2018-02-10'),
-(29,'01','01','01','01',1,'01@hotmail.con',NULL,NULL,'0','2018-03-06');
+(29,'01','01','01','01',1,'01@hotmail.con',NULL,NULL,'1','2018-03-06');
 
 /*Table structure for table `tb_rfid` */
 
@@ -102,14 +105,9 @@ CREATE TABLE `tb_rfid` (
   `rfid_status` varchar(1) DEFAULT NULL,
   `mem_gen` int(11) DEFAULT NULL,
   PRIMARY KEY (`rfid_gen`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_rfid` */
-
-insert  into `tb_rfid`(`rfid_gen`,`rfid_id`,`rfid_status`,`mem_gen`) values 
-(1,'RFID0001','1',29),
-(2,'RFID0002','1',2),
-(7,'5a2bb59a','1',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
